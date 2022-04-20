@@ -24,13 +24,15 @@ export const PermissionsProvider = ({ children }: any) => {
     const [permissions, setPermissions] = useState( PermissionInitState );
 
     useEffect(() => {
+
+        checkLocationPermission();
       
         AppState.addEventListener('change', state => {
             
             if( state !== 'active') return;
 
             checkLocationPermission();
-        })      
+        });
         
     }, [])
     
