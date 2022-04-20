@@ -2,12 +2,16 @@ import React from 'react';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import { View } from 'react-native';
 
+interface Props {
+  markers?: Marker[];
+}
 
-export const Map = () => {
+export const Map = ({ markers }:Props) => {
   return (
     <View style={{ flex: 1}}>
         <MapView
             style={{ flex: 1}}
+            showsUserLocation
             provider={ PROVIDER_GOOGLE }
             initialRegion={{
               latitude: 37.78825,
