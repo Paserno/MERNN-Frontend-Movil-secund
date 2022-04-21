@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { useLocation } from '../hooks/useLocation';
 import { LoadingScreen } from '../pages/LoadingScreen';
 import { Location } from '../interface/appInterface';
+import { Fab } from './Fab';
 
 
 interface Props {
@@ -41,6 +42,17 @@ export const Map = ({ markers }:Props) => {
               description=' Esto es una descripción del marcador'
             /> */}
         </MapView>
+
+        <Fab 
+          iconName='star-outline'
+          onPress={ () => console.log('Hola FAB') }
+          style={{
+            position: 'absolute',
+            bottom: 20,
+            right: 20
+          }}
+        />
     </View>
   )
 }
+20
