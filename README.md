@@ -9,7 +9,10 @@ Elementos Utilizados:
 * __[Vector Icon](https://github.com/oblador/react-native-vector-icons)__
 * __[RN Permissions](https://www.npmjs.com/package/react-native-permissions)__
 
-*__[RN Maps v0.29.3](https://github.com/react-native-maps/react-native-maps/tree/v0.29.3)__ (_Se utilizo esta versión porque se presento algunos problemas con la ultima_)
+* __[RN Maps v0.29.3](https://github.com/react-native-maps/react-native-maps/tree/v0.29.3)__ (_Se utilizo esta versión porque se presento algunos problemas con la ultima_)
+
+* __[RN Geolocation](https://github.com/react-native-geolocation/react-native-geolocation)__ (_Tomar la ubicación actual_)
+
 
 ----
 Recordar que si se desea ejecutar esta aplicación, deben de reconstruir los módulos de node así:
