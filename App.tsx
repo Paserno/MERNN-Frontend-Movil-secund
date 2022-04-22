@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Navigator } from './src/navigatior/Navigator';
 import { PermissionsProvider } from './src/context/PermissionsContext';
+import { StackNav } from './src/navigatior/StackNavigator';
 
 
 const AppState = ({ children }: any) => {
@@ -18,7 +19,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <AppState>
-        <Navigator />
+        {/* <Navigator /> */}
+        <StackNav />
       </AppState>
     </NavigationContainer>
   )
