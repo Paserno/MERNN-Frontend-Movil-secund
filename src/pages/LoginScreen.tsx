@@ -5,7 +5,7 @@ import { Background } from '../components/Background';
 import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
 
-export const LoadinScreen = () => {
+export const LoginScreen = () => {
   return (
     <>
         <Background />
