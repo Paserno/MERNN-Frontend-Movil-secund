@@ -17,7 +17,7 @@ export const StackNav = () => {
             }
         }}
     >
-      <Stack.Screen name="LoadinScreen" component={LoginScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="ProtectedScreen" component={ProtectedScreen} />
       <Stack.Screen name="Navigator" component={Navigator} />
