@@ -40,7 +40,7 @@ export const LoginScreen = ({ navigation }: Props) => {
 
 
     const onLogin = () => {
-        console.log({email, password});
+        // console.log({email, password});
         Keyboard.dismiss();
         signIn({correo: email, password});
     }

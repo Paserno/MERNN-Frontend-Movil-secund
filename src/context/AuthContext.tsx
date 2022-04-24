@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import connectionApi from '../api/ConnectionApi';
 
-import { Usuario, LoginResponse, LoginData } from '../interface/loginInterfaces';
+import { Usuario, LoginResponse, LoginData, RegisterData } from '../interface/loginInterfaces';
 import { authReducer, AuthState } from './authReducer';
 
 type AuthContextProps = {
@@ -11,7 +11,7 @@ type AuthContextProps = {
     token: string | null;
     user: Usuario | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
-    signUp: () => void;
+    signUp: ( registerdata :RegisterData) => void;
     signIn: ( logindata: LoginData ) => void;
     logOut: () => void;
     removeError: () => void;
@@ -86,7 +86,28 @@ export const AuthProvider = ({ children }: any) => {
     };
 
 
-    const signUp = () => {};
+    const signUp = async({ nombre, correo, password }: RegisterData) => {
+        try {
+        const { data } = await connectionApi.post<LoginResponse>('/usuarios', { nombre, correo, password });
+        dispatch({
+            type: 'signUp',
+            payload: {
+                token: data.token,
+                user: data.usuario
+            }
+        });
+
+        await AsyncStorage.setItem('token', data.token );
+            
+        } catch (error: any) {
+            console.log(error.response.data)
+            dispatch({
+                type: 'addError',
+                payload: error.response.data.msg || 'Información incorrecta'
+            })
+        }
+
+    };
     
     const logOut = async() => {
         await AsyncStorage.removeItem('token');
