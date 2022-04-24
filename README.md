@@ -13,6 +13,8 @@ Elementos Utilizados:
 
 * __[RN Geolocation](https://github.com/react-native-geolocation/react-native-geolocation)__ (_Tomar la ubicación actual_)
 
+* __[Async Storage](https://react-native-async-storage.github.io/async-storage/docs/install/)__
+
 
 ----
 Recordar que si se desea ejecutar esta aplicación, deben de reconstruir los módulos de node así:
