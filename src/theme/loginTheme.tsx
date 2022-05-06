@@ -51,8 +51,8 @@ export const loginStyles = StyleSheet.create({
     },
     buttonReturn:{
         position: 'absolute',
-        top: 50,
-        left: 20,
+        top: 30,
+        right: 20,
         borderWidth: 1,
         borderColor: 'white',
         paddingHorizontal: 10,

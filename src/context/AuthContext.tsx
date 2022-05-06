@@ -86,9 +86,9 @@ export const AuthProvider = ({ children }: any) => {
     };
 
 
-    const signUp = async({ nombre, correo, password }: RegisterData) => {
+    const signUp = async({ correo, password, nombre, apellido, ciudad, direccion }: RegisterData) => {
         try {
-        const { data } = await connectionApi.post<LoginResponse>('/usuarios', { nombre, correo, password });
+        const { data } = await connectionApi.post<LoginResponse>('/usuarios', { correo, password, nombre, apellido, ciudad, direccion });
         dispatch({
             type: 'signUp',
             payload: {

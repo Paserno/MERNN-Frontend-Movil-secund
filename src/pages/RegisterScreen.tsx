@@ -7,7 +7,8 @@ import {
     TouchableOpacity, 
     Keyboard, 
     TextInput, 
-    Alert } from 'react-native';
+    Alert,
+    ScrollView} from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { loginStyles } from '../theme/loginTheme';
@@ -22,10 +23,13 @@ export const RegisterScreen = ({ navigation }: Props) => {
 
     const { signUp, errorMessage, removeError } = useContext( AuthContext );
 
-  const { email, password, name, onChange } = useForm({
+  const { email, password, name, apellido, ciudad, direccion, onChange } = useForm({
     name: '',
+    apellido: '',
     email: '',
-    password: ''
+    password: '',
+    ciudad: '',
+    direccion: ''
 });
 
 useEffect(() => {
@@ -43,20 +47,24 @@ const onRegister = () => {
     Keyboard.dismiss();
     signUp({
         nombre: name,
+        apellido,
         correo: email,
-        password});
+        password,
+        ciudad,
+        direccion,
+    });
 }
 
   return (
     <>
 
-    <KeyboardAvoidingView
+    <View
         style={{ flex: 1, backgroundColor: '#5856D6'}}
-        behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
+        // behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
     >
 
-            <View style={ loginStyles.formContainer}>
-                <WhiteLogo />
+            <View style={{...loginStyles.formContainer}}>
+                {/* <WhiteLogo /> */}
 
                 <Text style={ loginStyles.title }>Registro</Text>
 
@@ -74,6 +82,26 @@ const onRegister = () => {
 
                     onChangeText={ (value) => onChange(value, 'name')}
                     value={ name }
+                    onSubmitEditing={ onRegister }
+
+                    autoCapitalize='words'
+                    autoCorrect={ false }
+                />
+
+                    {/* Input apellido */}
+                <Text style={ loginStyles.label }>Apellido:</Text>
+                <TextInput
+                    placeholder='Ingrese su nombre:'
+                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    underlineColorAndroid="white"
+                    style={[ 
+                        loginStyles.inputField,
+                        ( Platform.OS === 'ios') && loginStyles.inputFieldIOS
+                    ]}
+                    selectionColor="white"
+
+                    onChangeText={ (value) => onChange(value, 'apellido')}
+                    value={ apellido }
                     onSubmitEditing={ onRegister }
 
                     autoCapitalize='words'
@@ -122,6 +150,49 @@ const onRegister = () => {
                     autoCorrect={ false }
                 />
 
+
+        
+                  {/* Input ciudad */}
+                  <Text style={ loginStyles.label }>Ciudad:</Text>
+                <TextInput
+                    placeholder='Ingrese su nombre:'
+                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    underlineColorAndroid="white"
+                    style={[ 
+                        loginStyles.inputField,
+                        ( Platform.OS === 'ios') && loginStyles.inputFieldIOS
+                    ]}
+                    selectionColor="white"
+
+                    onChangeText={ (value) => onChange(value, 'ciudad')}
+                    value={ ciudad }
+                    onSubmitEditing={ onRegister }
+
+                    autoCapitalize='words'
+                    autoCorrect={ false }
+                />
+
+
+                  {/* Input direccion */}
+                  <Text style={ loginStyles.label }>Dirección:</Text>
+                <TextInput
+                    placeholder='Ingrese su nombre:'
+                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    underlineColorAndroid="white"
+                    style={[ 
+                        loginStyles.inputField,
+                        ( Platform.OS === 'ios') && loginStyles.inputFieldIOS
+                    ]}
+                    selectionColor="white"
+
+                    onChangeText={ (value) => onChange(value, 'direccion')}
+                    value={ direccion }
+                    onSubmitEditing={ onRegister }
+
+                    autoCapitalize='words'
+                    autoCorrect={ false }
+                />
+
                 {/* Boton Login */}
                 <View style={ loginStyles.buttonContainer}>
                     <TouchableOpacity
@@ -134,6 +205,7 @@ const onRegister = () => {
                 </View>
 
                 {/* Crear una nueva cuenta */}
+                
                     <TouchableOpacity
                         onPress={ () => navigation.replace('LoginScreen')}
                         activeOpacity={ 0.8 }
@@ -141,8 +213,9 @@ const onRegister = () => {
                     >
                         <Text style={ loginStyles.buttonText}> Login </Text>
                     </TouchableOpacity>
-            </View>
-        </KeyboardAvoidingView>
+                    
+                </View>
+        </View>
     </>
   )
 }
