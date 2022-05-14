@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { BackgroundChat } from '../components/BackgroundChat';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { SendMessage } from '../components/chat/SendMessage';
+import { InComingMessage } from '../components/chat/InComingMessage';
+import { OutComingMessage } from '../components/chat/OutComingMessage';
 
 
 export const ChatScreen = ({route}: any) => {
@@ -45,6 +47,26 @@ export const ChatScreen = ({route}: any) => {
     </View>
 
     <View style={ styles.contanierBlanco}>
+      <View style={ styles.chatMessage}>
+        {/* <ScrollView > */}
+            <OutComingMessage />
+            
+            <InComingMessage />
+            <OutComingMessage />
+            <OutComingMessage />
+            <InComingMessage />
+            <InComingMessage />
+
+
+
+
+
+            
+
+
+        {/* </ScrollView> */}
+
+      </View>
         <SendMessage />
     </View>
 
@@ -59,26 +81,39 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(255, 255, 255, 0.5)',
       marginTop: 10,
       borderTopEndRadius: 25,
-      borderTopStartRadius: 25
-  },
-      contanier: {
-        flex: 1,
-        paddingLeft: 20,
-        paddingRight: 20,
-        alignItems: 'center',
-      },
-      sectionText: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 5,
-        marginTop: 30,
-        paddingLeft: 0,
-        marginLeft: 50,
-      },
-      title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: 'rgba(255, 255, 255, 0.85)'
+      borderTopStartRadius: 25,
     },
+    contanier: {
+      flex: 1,
+      paddingLeft: 20,
+      paddingRight: 20,
+      alignItems: 'center',
+      
+    },
+    chatMessage: {
+      flex: 1,
+      borderTopEndRadius: 25,
+      borderTopStartRadius: 25,
+      marginTop: 1,
+      marginBottom: 72,
+      justifyContent: 'flex-end',
+      alignItems: 'flex-start'
+      // backgroundColor: 'black',
+      
+    },
+    
+    sectionText: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 5,
+      marginTop: 30,
+      paddingLeft: 0,
+      marginLeft: 50,
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: 'rgba(255, 255, 255, 0.85)'
+    }
   
   });
