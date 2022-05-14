@@ -40,7 +40,7 @@ export const StackNav = () => {
                 <>
                   <Stack.Screen name="ProtectedScreen" component={ProtectedScreen} />
                   <Stack.Screen name="Navigator" component={Navigator} />
-                  <Stack.Screen name="JardinerosScreen" options={{headerShown: true, title: 'Jardineros'}} component={JardinerosScreen} />
+                  <Stack.Screen name="JardinerosScreen" options={{ title: 'Jardineros'}} component={JardinerosScreen} />
                 </>
               )
 

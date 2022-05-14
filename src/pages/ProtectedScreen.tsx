@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, StatusBar } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,6 +13,8 @@ export const ProtectedScreen = ({ navigation }: Props) => {
 
   return (
     <View style={ styles.container }>
+      <StatusBar  translucent barStyle="dark-content" backgroundColor="transparent" />
+
         <Text style={ styles.title }>ProtectedScreen</Text>
 
         <Button 
