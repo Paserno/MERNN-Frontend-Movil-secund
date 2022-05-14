@@ -1,13 +1,28 @@
-import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, StatusBar } from 'react-native';
+import React, { useContext, useEffect } from 'react'
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, ScrollView} from 'react-native';
 import { Card } from '../components/Card';
 import { BackgroundChat } from '../components/BackgroundChat';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ScrollView } from 'react-native-gesture-handler';
+import { UsuarioContext } from '../context/UsuarioContext';
+// import { Usuario } from '../interface/activoInterface';
 
 
 
 export const JardinerosScreen = ({ navigation }: any) => {
+
+  const {usuarios, cargarUsuario} = useContext(UsuarioContext);
+
+  useEffect(() => {
+    cargarUsuario();
+  }, [])
+
+  
+  const renderItem = ({item}:any) => (
+    <Card datos={ item } />
+    
+  )
+
+  
   return (
     <BackgroundChat>
       <StatusBar  translucent barStyle="light-content" backgroundColor="transparent" />
@@ -37,20 +52,21 @@ export const JardinerosScreen = ({ navigation }: any) => {
       
     </View>
     <View style={ styles.contanierBlanco}>
-      <ScrollView>
+      {/* <ScrollView> */}
         <View style={ styles.contanier }>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            <FlatList 
+              data={ usuarios }
+              keyExtractor={ (item) => item._id }
+              renderItem={ renderItem }
+              // horizontal={ true }
+              showsVerticalScrollIndicator={ false}
+              style={{ width: 350, height: 75, marginBottom: 10}}
+            />
+            
+            {/* <Card /> */}
+
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </View>
 
     
@@ -71,11 +87,6 @@ const styles = StyleSheet.create({
       paddingLeft: 20,
       paddingRight: 20,
       alignItems: 'center',
-      // backgroundColor: 'rgba(255, 255, 255, 0.4)',
-      // marginTop: 10,
-      // borderTopEndRadius: 25,
-      // borderTopStartRadius: 25
-        
     },
     sectionText: {
       flexDirection: 'row',

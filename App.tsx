@@ -4,15 +4,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { PermissionsProvider } from './src/context/PermissionsContext';
 import { StackNav } from './src/navigatior/StackNavigator';
 import { AuthProvider } from './src/context/AuthContext';
+import { UsuarioProvider } from './src/context/UsuarioContext';
 
 
 const AppState = ({ children }: any) => {
 
   return ( 
     <AuthProvider>
-      <PermissionsProvider>
-        { children }
-      </PermissionsProvider>
+      <UsuarioProvider>
+        <PermissionsProvider>
+          { children }
+        </PermissionsProvider>
+      </UsuarioProvider>
     </AuthProvider>
   )
 }

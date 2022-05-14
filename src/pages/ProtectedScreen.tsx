@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, Button, StatusBar } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { UsuarioContext } from '../context/UsuarioContext';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -10,6 +11,12 @@ interface Props extends StackScreenProps<any, any> {}
 export const ProtectedScreen = ({ navigation }: Props) => {
 
   const { user, token, logOut } = useContext( AuthContext );
+
+  const {cargarUsuario} = useContext(UsuarioContext);
+
+  useEffect(() => {
+      cargarUsuario();
+    }, [])
 
   return (
     <View style={ styles.container }>

@@ -1,12 +1,17 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
-export const Card = () => {
+
+export const Card = ({datos}: any) => {
 
     const uri = 'https://www.xtrafondos.com/wallpapers/paisaje-digital-en-atardecer-5846.jpg'
-
+    
+    const {nombre, apellido, jardinero} = datos 
+    const especialidad = jardinero.especialidad
+    
 
   return (
     <TouchableOpacity
@@ -19,13 +24,19 @@ export const Card = () => {
                 source={{ uri }}
             />
             <View style={styles.textSection}> 
-               <Text style={ styles.userName }>Diego Maradona</Text>
+               <Text style={ styles.userName }>{nombre} {apellido}</Text>
             
-               <Text style={ styles.userName }>Especialidad: Panadero</Text>
+               <Text style={ styles.userName }>Especialidad: {especialidad}</Text>
 
             </View>
-            <View>
-                <Text style={ styles.pointCustom }>Activo</Text>
+            <View style={{ right: 20}}>
+                {/* chevron-forward-sharp */}
+                <Icon 
+                    name={ 'chevron-forward-sharp' }
+                    color="rgba(66, 66, 66, 0.7)"
+                    size={ 34 }
+                    style={{ marginTop: 10, position:'absolute'}}
+                /> 
             </View>
 
         </View>
@@ -35,13 +46,13 @@ export const Card = () => {
 
 const styles = StyleSheet.create({
     card: {
+    
         width: '100%',
         height: 75,
-        // backgroundColor: 'rgba(106, 90, 205, 0.6)',
+        // backgroundColor: 'red',
         borderBottomColor: 'rgba(28, 28, 28, 0.5)',
         borderBottomWidth: 1,
         borderRadius: 15,
-        // marginBottom: 12,
         marginTop: 20,
     },
     userInfo: {
@@ -51,13 +62,16 @@ const styles = StyleSheet.create({
     },
     textSection: {
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         padding: 5,
         paddingLeft: 0,
-        marginLeft: 50,
+        marginLeft: -10,
+        width: 220,
+        // backgroundColor: 'blue'
         
     },
     userName: {
+        justifyContent: 'flex-start',
         fontSize: 14,
         fontWeight: 'bold',
         fontFamily: 'Lato-Regular',
