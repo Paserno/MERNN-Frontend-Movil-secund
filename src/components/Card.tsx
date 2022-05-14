@@ -1,3 +1,4 @@
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,14 +10,31 @@ export const Card = ({datos}: any) => {
 
     const uri = 'https://www.xtrafondos.com/wallpapers/paisaje-digital-en-atardecer-5846.jpg'
     
-    const {nombre, apellido, jardinero} = datos 
+    const {nombre, apellido, jardinero, _id: id} = datos 
     const especialidad = jardinero.especialidad
     
+    const navigator = useNavigation();
+
+    /*
+    useEffect(() => {
+    navigator.setOptions({
+      title: 'Hola Mundo',
+      headerBackTitle: 'Atras' //para tener un back en IOS
+    })
+  }, [])
+    */
+
 
   return (
     <TouchableOpacity
         activeOpacity={ 0.85 }
         style={ styles.card}
+        onPress={ () => navigator.dispatch(
+            CommonActions.navigate({
+                name: 'ChatScreen',
+                params: { id: id}
+            })
+        )}
     >
         <View style={styles.userInfo}>
             <Image

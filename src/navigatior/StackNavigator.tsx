@@ -9,6 +9,7 @@ import { RegisterScreen } from '../pages/RegisterScreen';
 import { ProtectedScreen } from '../pages/ProtectedScreen';
 import { LoadingScreen } from '../pages/LoadingScreen';
 import { JardinerosScreen } from '../pages/JardinerosScreen';
+import { ChatScreen } from '../pages/ChatScreen';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ export const StackNav = () => {
                   <Stack.Screen name="ProtectedScreen" component={ProtectedScreen} />
                   <Stack.Screen name="Navigator" component={Navigator} />
                   <Stack.Screen name="JardinerosScreen" options={{ title: 'Jardineros'}} component={JardinerosScreen} />
+                  <Stack.Screen name="ChatScreen" component={ChatScreen} />
                 </>
               )
 
