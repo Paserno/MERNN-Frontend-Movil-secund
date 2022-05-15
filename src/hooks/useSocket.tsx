@@ -1,37 +1,48 @@
 
 import {useCallback, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { io } from 'socket.io-client';
+import { io, Socket }  from 'socket.io-client';
 
 
 
 export const useSocket = (serverPath: any) => {
 
-    // serverPath = 'http://localhost:8082';
+    // serverPath = 'http://192.168.1.84:8082';
 
-    const [socket, setSocket] = useState(null)
-
-    const conectarSocket = useCallback(() => {
+    const [socket, setSocket]:any = useState(null)
+    
+    const conectarSocket = useCallback(async() => {
         
-        const token = AsyncStorage.getItem('token');
-
-        const socketTemp:any = io( serverPath,{ 
+        const token = await AsyncStorage.getItem('token');
+        
+        const socketTemp = io( serverPath, { 
             transports: ['websocket'],
             autoConnect: true,
             forceNew: true,
-            query: {
-                'x-token': token
+            'extraHeaders': {
+                'x-token': token!
             }
         });
+        
         setSocket(socketTemp);
-
 
       }, [serverPath])
 
-      console.log(socket)
+
+    //   const emitirMensaje = (uid: any, id: string, mensaje: string) => {
+    //       console.log(uid, id, mensaje)
+    //       console.log(socket);
+    //       socket?.emit('mensaje-personal',{
+    //         de: uid,
+    //         para: id,
+    //         mensaje
+    //    })
+    //   }
+
     
     return {
         socket,
-        conectarSocket
+        conectarSocket,
+        
     }
 }

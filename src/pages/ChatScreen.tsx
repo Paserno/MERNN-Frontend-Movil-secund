@@ -56,18 +56,10 @@ export const ChatScreen = ({route}: any) => {
             <OutComingMessage />
             <InComingMessage />
             <InComingMessage />
-
-
-
-
-
-            
-
-
         {/* </ScrollView> */}
 
       </View>
-        <SendMessage />
+        <SendMessage  value={params}/>
     </View>
 
       

@@ -1,10 +1,39 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native';
+import React, {useContext} from 'react'
+import { View, StyleSheet, Keyboard } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useForm } from '../../hooks/useForm';
+import { AuthContext } from '../../context/AuthContext';
+import { SocketContext } from '../../context/SocketContext';
+import { useSocket } from '../../hooks/useSocket';
 
 
-export const SendMessage = () => {
+export const SendMessage = ({value}: any) => {
+
+    // const {emitirMensaje} = useSocket({} as any );
+
+    const {user} = useContext(AuthContext);
+    const {socket} = useContext(SocketContext);
+
+    const { mensaje, onChange, onReset} = useForm({
+        mensaje: ''
+    })
+    const { id } = value
+
+    const onMessage = () => {
+        Keyboard.dismiss();
+
+        if (mensaje.length === 0 ){ return; }
+        onReset()
+
+        socket.emit( 'mensaje-personal',{
+             de: user?.uid,
+             para: id,
+             mensaje
+        })
+    }
+
+
   return (
     <View style={styles.containerInput}>
         <View style={styles.rowContainer}>
@@ -12,7 +41,7 @@ export const SendMessage = () => {
         
         <TouchableOpacity
             style={ styles.icon1 }
-
+            activeOpacity={ 0.5 }
         >
             <Icon 
                 name={ 'add-circle-sharp' }
@@ -24,13 +53,18 @@ export const SendMessage = () => {
         </TouchableOpacity>
         <TextInput 
         style={ styles.inputField}
-    
+        value={ mensaje }
+        onChangeText={ (value) => onChange(value, 'mensaje')}
+        onSubmitEditing= { onMessage }
+        
+
         />
 
 
         <TouchableOpacity
                 style={ styles.icon2 }
-        
+                activeOpacity={ 0.5 }
+                onPress={ onMessage }
         >
             <Icon 
                 name={ 'send' }

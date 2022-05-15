@@ -4,6 +4,10 @@ export const useForm = <T extends Object>( initState: T ) => {
     
     const [state, setState] = useState( initState );
 
+    const onReset = () => {
+        setState(initState)
+    }
+
     const onChange = ( value: string, field: keyof T ) => {
         setState({
             ...state,
@@ -15,6 +19,7 @@ export const useForm = <T extends Object>( initState: T ) => {
         ...state,
         form: state,
         onChange,
+        onReset
     }
 
 }

@@ -8,12 +8,12 @@ export const SocketContext = createContext({} as any);
 
 export const SocketProvider = ({children}:any) => {
 
-    const { socket, conectarSocket } = useSocket('http://localhost:8082');
+    const { socket, conectarSocket } = useSocket('http://192.168.1.84:8082');
     const { logged, user }: AuthState = useContext(AuthContext)
 
     useEffect(() => {
         if(logged){
-            console.log(user?.uid)
+            // console.log(user?.uid)
             conectarSocket();
         }
     }, [ logged, conectarSocket])
