@@ -10,6 +10,7 @@ type AuthContextProps = {
     errorMessage: string;
     token: string | null;
     user: Usuario | null;
+    logged: boolean;
     status: 'checking' | 'authenticated' | 'not-authenticated';
     signUp: ( registerdata :RegisterData) => void;
     signIn: ( logindata: LoginData ) => void;
@@ -20,6 +21,7 @@ type AuthContextProps = {
 
 const authInicialState : AuthState = {
     status: 'checking',
+    logged: false,
     token: null,
     user: null,
     errorMessage: '',
@@ -56,7 +58,8 @@ export const AuthProvider = ({ children }: any) => {
             type: 'signUp',
             payload: {
                 token: resp.data.token,
-                user: resp.data.usuario
+                user: resp.data.usuario,
+                logged: true
             }
         });
 
@@ -71,7 +74,8 @@ export const AuthProvider = ({ children }: any) => {
                 type: 'signUp',
                 payload: {
                     token: data.token,
-                    user: data.usuario
+                    user: data.usuario,
+                    logged: true
                 }
             });
 
@@ -93,7 +97,8 @@ export const AuthProvider = ({ children }: any) => {
             type: 'signUp',
             payload: {
                 token: data.token,
-                user: data.usuario
+                user: data.usuario,
+                logged: true
             }
         });
 

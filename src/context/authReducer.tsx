@@ -2,6 +2,7 @@ import { Usuario } from '../interface/loginInterfaces';
 
 export interface AuthState {
     status: 'checking' | 'authenticated' | 'not-authenticated';
+    logged: boolean,
     token : string | null;
     errorMessage: string;
     user: Usuario | null;
@@ -9,7 +10,7 @@ export interface AuthState {
 
 
 type AuthAction = 
-    |  { type: 'signUp', payload: { token: string, user: Usuario } }
+    |  { type: 'signUp', payload: { token: string, user: Usuario, logged: boolean } }
     |  { type: 'addError', payload: string }
     |  { type: 'removeError' }
     |  { type: 'notAuthenticated' }
@@ -40,7 +41,8 @@ export const authReducer = ( state: AuthState, action: AuthAction): AuthState =>
                 errorMessage: '',
                 status: 'authenticated',
                 token: action.payload.token,
-                user: action.payload.user
+                user: action.payload.user,
+                logged: action.payload.logged
             }
 
         case 'logout':
@@ -49,7 +51,8 @@ export const authReducer = ( state: AuthState, action: AuthAction): AuthState =>
                 ...state,
                 status: 'not-authenticated',
                 token: null,
-                user: null
+                user: null,
+                logged: false
             }
 
        
