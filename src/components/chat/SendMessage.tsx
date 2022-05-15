@@ -1,16 +1,17 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { View, StyleSheet, Keyboard } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
 import { SocketContext } from '../../context/SocketContext';
-import { useSocket } from '../../hooks/useSocket';
+import { ChatContext } from '../../context/ChatContext';
 
 
 export const SendMessage = ({value}: any) => {
 
     // const {emitirMensaje} = useSocket({} as any );
+    const {dispatch, chatState}= useContext(ChatContext);
 
     const {user} = useContext(AuthContext);
     const {socket} = useContext(SocketContext);
@@ -20,12 +21,25 @@ export const SendMessage = ({value}: any) => {
     })
     const { id } = value
 
+    // useEffect(() => {
+    //     console.log(socket);
+    //     console.log(chatState);
+    //     socket?.on('mensaje-personal', (mensaje:any) => {
+    //         console.log(mensaje);
+    //         console.log('xd');
+    //         dispatch({
+    //             type: 'nuevoMensaje',
+    //             payload: mensaje
+    //         })
+    //     });
+
+    // }, [socket, dispatch])
+
     const onMessage = () => {
         Keyboard.dismiss();
 
         if (mensaje.length === 0 ){ return; }
         onReset()
-
         socket.emit( 'mensaje-personal',{
              de: user?.uid,
              para: id,

@@ -1,10 +1,14 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native';
 
-export const OutComingMessage = () => {
+export const OutComingMessage = ({mss}:any) => {
+
+  // console.log(mss.mensaje)
+
+
   return (
     <View style={ styles.container}>
-      <Text style={ styles.text}>Laborum quis aute qui aliquip dolor ex commodo adipisicing voluptate esse do anim adipisicing ea. Cillum aliquip </Text>
+      <Text style={ styles.text}> {mss.mensaje} </Text>
     </View>
   )
 }

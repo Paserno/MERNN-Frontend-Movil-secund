@@ -1,40 +1,57 @@
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import React from 'react'
+import React, {useContext} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { ChatContext } from '../context/ChatContext';
+import connectionApi from '../api/ConnectionApi';
 
 
 
 
 export const Card = ({datos}: any) => {
 
+    const {dispatch} = useContext(ChatContext);
+
     const uri = 'https://www.xtrafondos.com/wallpapers/paisaje-digital-en-atardecer-5846.jpg'
     
     const {nombre, apellido, jardinero, _id: id} = datos 
-    const especialidad = jardinero.especialidad
+    const especialidad = jardinero.especialidad;
+    
     
     const navigator = useNavigation();
 
-    /*
-    useEffect(() => {
-    navigator.setOptions({
-      title: 'Hola Mundo',
-      headerBackTitle: 'Atras' //para tener un back en IOS
+
+   const onClick = async() => {
+
+    dispatch({
+        type: 'ActivarChat',
+        payload: id
+    });
+
+    const {data} = await connectionApi.get(`mensajes/${id}`, {});
+
+    dispatch({
+        type: 'cargarMensajes',
+        payload: data.mensajes
     })
-  }, [])
-    */
+
+
+    navigator.dispatch(
+        CommonActions.navigate({
+            name: 'ChatScreen',
+            params: { id: id}
+        })
+    )
+
+
+   }
 
 
   return (
     <TouchableOpacity
         activeOpacity={ 0.85 }
         style={ styles.card}
-        onPress={ () => navigator.dispatch(
-            CommonActions.navigate({
-                name: 'ChatScreen',
-                params: { id: id}
-            })
-        )}
+        onPress={onClick}
     >
         <View style={styles.userInfo}>
             <Image

@@ -1,19 +1,30 @@
-import React from 'react'
-import { View, Text, StatusBar, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, {useContext} from 'react'
+import { View, Text, StatusBar, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { BackgroundChat } from '../components/BackgroundChat';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { SendMessage } from '../components/chat/SendMessage';
 import { InComingMessage } from '../components/chat/InComingMessage';
 import { OutComingMessage } from '../components/chat/OutComingMessage';
+import { AuthContext } from '../context/AuthContext';
+import { ChatContext } from '../context/ChatContext';
 
 
 export const ChatScreen = ({route}: any) => {
 
     // En los params.id se recibe el id de la persona seleccionada.
     const { params} = route;
+    const { user } = useContext( AuthContext );
+    const { chatState } = useContext( ChatContext );
+
+    
     const navigator = useNavigation();
 
+    const renderItem = ({item}:any) => (
+      ( item.para === user?.uid)
+      ? <OutComingMessage mss={ item }/>
+      : <InComingMessage mss={ item }/>     
+    )
 
   return (
     
@@ -49,13 +60,23 @@ export const ChatScreen = ({route}: any) => {
     <View style={ styles.contanierBlanco}>
       <View style={ styles.chatMessage}>
         {/* <ScrollView > */}
-            <OutComingMessage />
+        <FlatList 
+              data={ chatState.mensajes }
+              keyExtractor={ (item) => item._id }
+              renderItem={ renderItem }
+              // horizontal={ true }
+              showsVerticalScrollIndicator={ false}
+              style={{ width: '100%' }}
+              contentContainerStyle={{ justifyContent: 'flex-end' }}
+              inverted
+            />
+            {/* <OutComingMessage />
             
             <InComingMessage />
             <OutComingMessage />
             <OutComingMessage />
             <InComingMessage />
-            <InComingMessage />
+            <InComingMessage /> */}
         {/* </ScrollView> */}
 
       </View>
@@ -89,7 +110,7 @@ const styles = StyleSheet.create({
       marginTop: 1,
       marginBottom: 72,
       justifyContent: 'flex-end',
-      alignItems: 'flex-start'
+      alignItems: 'flex-start',
       // backgroundColor: 'black',
       
     },

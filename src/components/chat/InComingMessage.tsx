@@ -1,10 +1,12 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native';
 
-export const InComingMessage = () => {
+export const InComingMessage = ({mss}:any) => {
+
+  // console.log(mss.mensaje)
   return (
     <View style={ styles.container}>
-      <Text style={ styles.text }>Excepteur esse velit nisi ullamco sint ex occaecat non dolor anim aliquip. Officia id ea anim reprehenderit magna excepteur sunt ea cillum. Exercitation non et mollit officia eiusmod voluptate. </Text>
+      <Text style={ styles.text }> {mss.mensaje}</Text>
     </View>
   )
 }
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     },
     text : {
       color: 'white',
-      margin: 7,
+      margin: 10,
       fontSize: 15
 
     }
