@@ -10,23 +10,25 @@ export const SocketContext = createContext({} as any);
 export const SocketProvider = ({children}:any) => {
 
     const { dispatch }= useContext(ChatContext);
-    const { socket, conectarSocket } = useSocket('http://192.168.1.84:8082');
-    const { logged, user }: AuthState = useContext(AuthContext);
+    const { socket, conectarSocket, desconectarSocket } = useSocket('http://192.168.1.84:8082');
+    const { logged }: AuthState = useContext(AuthContext);
 
     useEffect(() => {
         if(logged){
-            // console.log(user?.uid)
-            conectarSocket();
+          conectarSocket();
         }
     }, [ logged, conectarSocket])
 
+    useEffect(() => {
+      if (!logged){
+        desconectarSocket()
+      }
+    }, [socket, desconectarSocket])
     
     
     useEffect(() => {
-      
+
         socket?.on('recibir-mensajes', (mensaje:any) => {
-            console.log(mensaje);
-            console.log('xd');
             dispatch({
                 type: 'nuevoMensaje',
                 payload: mensaje

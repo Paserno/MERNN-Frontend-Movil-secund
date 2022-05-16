@@ -1,17 +1,15 @@
 
 import {useCallback, useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { io, Socket }  from 'socket.io-client';
-import { ChatContext } from '../context/ChatContext';
+import { io }  from 'socket.io-client';
 
 
 
-export const useSocket = (serverPath: any) => {
+export const useSocket = (serverPath:any) => {
 
-    // serverPath = 'http://192.168.1.84:8082';
+    // const serverPath = 'http://192.168.1.84:8082';
 
     const [socket, setSocket]:any = useState(null);
-    const { dispatch } = useContext( ChatContext );
 
     
     const conectarSocket = useCallback(async() => {
@@ -20,6 +18,7 @@ export const useSocket = (serverPath: any) => {
         
         const socketTemp = io( serverPath, { 
             transports: ['websocket'],
+            reconnection: true,
             autoConnect: true,
             forceNew: true,
             'extraHeaders': {
@@ -29,26 +28,20 @@ export const useSocket = (serverPath: any) => {
         
         setSocket(socketTemp);
 
-      }, [serverPath])
+      }, [serverPath]);
 
 
-      useEffect(() => {
-        
-        socket?.on('mensaje-personal', (mensaje:any) => {
-            console.log(mensaje);
-            console.log('xd');
-            dispatch({
-                type: 'nuevoMensaje',
-                payload: mensaje
-            })
-        });
+    const desconectarSocket = useCallback(() => {
+        socket?.disconnect();
 
-    }, [socket, dispatch])
+    }, [socket]);
+
 
     
     return {
         socket,
         conectarSocket,
+        desconectarSocket
         
     }
 }
