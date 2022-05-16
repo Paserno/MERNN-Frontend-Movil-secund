@@ -9,7 +9,7 @@ export const SocketContext = createContext({} as any);
 
 export const SocketProvider = ({children}:any) => {
 
-    const {dispatch, chatState}= useContext(ChatContext);
+    const { dispatch }= useContext(ChatContext);
     const { socket, conectarSocket } = useSocket('http://192.168.1.84:8082');
     const { logged, user }: AuthState = useContext(AuthContext);
 
@@ -23,9 +23,8 @@ export const SocketProvider = ({children}:any) => {
     
     
     useEffect(() => {
-        console.log(socket);
-        console.log(chatState);
-        socket?.on('mensaje-personal', (mensaje:any) => {
+      
+        socket?.on('recibir-mensajes', (mensaje:any) => {
             console.log(mensaje);
             console.log('xd');
             dispatch({

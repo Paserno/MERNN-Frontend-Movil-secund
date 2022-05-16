@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { View, Text, StatusBar, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { BackgroundChat } from '../components/BackgroundChat';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -8,6 +8,8 @@ import { InComingMessage } from '../components/chat/InComingMessage';
 import { OutComingMessage } from '../components/chat/OutComingMessage';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
+import { SocketContext } from '../context/SocketContext';
+
 
 
 export const ChatScreen = ({route}: any) => {
@@ -15,7 +17,8 @@ export const ChatScreen = ({route}: any) => {
     // En los params.id se recibe el id de la persona seleccionada.
     const { params} = route;
     const { user } = useContext( AuthContext );
-    const { chatState } = useContext( ChatContext );
+    const { chatState, dispatch } = useContext( ChatContext );
+    const {socket} = useContext(SocketContext)
 
     
     const navigator = useNavigation();
@@ -64,7 +67,6 @@ export const ChatScreen = ({route}: any) => {
               data={ chatState.mensajes }
               keyExtractor={ (item) => item._id }
               renderItem={ renderItem }
-              // horizontal={ true }
               showsVerticalScrollIndicator={ false}
               style={{ width: '100%' }}
               contentContainerStyle={{ justifyContent: 'flex-end' }}

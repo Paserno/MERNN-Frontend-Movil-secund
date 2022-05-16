@@ -18,6 +18,21 @@ export const chatReducer = (state: any, action: ChatAction) => {
                 usuarios:[],
                 mensajes:[]
             }
+
+        case 'nuevoMensaje':
+            console.log(action.payload.mensaje)
+
+            if (state.chatActivo === action.payload.de ||
+                state.chatActivo === action.payload.para
+            ) {
+                console.log(state.mensajes)
+                return {
+                    ...state,
+                    mensajes: [action.payload, ...state.mensajes]
+                }
+            } else {
+                return state;
+            }
         
         case 'usuariosCargados':
             return {
@@ -33,20 +48,7 @@ export const chatReducer = (state: any, action: ChatAction) => {
                 mensajes: []
             }
 
-        case 'nuevoMensaje':
-            console.log(action.payload)
-
-            if (state.chatActivo === action.payload.de ||
-                state.chatActivo === action.payload.para
-            ) {
-                console.log(action.payload)
-                return {
-                    ...state,
-                    mensajes: [...state.mensajes, action.payload]
-                }
-            } else {
-                return state;
-            }
+        
         
         case 'cargarMensajes': 
             return {
