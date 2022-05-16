@@ -91,7 +91,7 @@ const onRegister = () => {
                     {/* Input apellido */}
                 <Text style={ loginStyles.label }>Apellido:</Text>
                 <TextInput
-                    placeholder='Ingrese su nombre:'
+                    placeholder='Ingrese su apellido:'
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     underlineColorAndroid="white"
                     style={[ 
@@ -155,7 +155,7 @@ const onRegister = () => {
                   {/* Input ciudad */}
                   <Text style={ loginStyles.label }>Ciudad:</Text>
                 <TextInput
-                    placeholder='Ingrese su nombre:'
+                    placeholder='Ingrese su ciudad:'
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     underlineColorAndroid="white"
                     style={[ 
@@ -176,7 +176,7 @@ const onRegister = () => {
                   {/* Input direccion */}
                   <Text style={ loginStyles.label }>Dirección:</Text>
                 <TextInput
-                    placeholder='Ingrese su nombre:'
+                    placeholder='Ingrese su dirección:'
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     underlineColorAndroid="white"
                     style={[ 
