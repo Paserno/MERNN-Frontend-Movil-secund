@@ -8,7 +8,6 @@ import { InComingMessage } from '../components/chat/InComingMessage';
 import { OutComingMessage } from '../components/chat/OutComingMessage';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
-import { SocketContext } from '../context/SocketContext';
 
 
 
@@ -17,8 +16,7 @@ export const ChatScreen = ({route}: any) => {
     // En los params.id se recibe el id de la persona seleccionada.
     const { params} = route;
     const { user } = useContext( AuthContext );
-    const { chatState, dispatch } = useContext( ChatContext );
-    const {socket} = useContext(SocketContext)
+    const { chatState } = useContext( ChatContext );
 
     
     const navigator = useNavigation();
@@ -47,7 +45,7 @@ export const ChatScreen = ({route}: any) => {
             style={{ marginLeft: -20}}
         /> 
       </TouchableOpacity>
-      <Text style={ styles.title}>Chat</Text>
+      <Text style={ styles.title}>Chat: {params.nombre}</Text>
       <TouchableOpacity
         activeOpacity={ 0.8 }
       >

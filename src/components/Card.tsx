@@ -39,7 +39,7 @@ export const Card = ({datos}: any) => {
     navigator.dispatch(
         CommonActions.navigate({
             name: 'ChatScreen',
-            params: { id: id}
+            params: { id: id, nombre: nombre}
         })
     )
 

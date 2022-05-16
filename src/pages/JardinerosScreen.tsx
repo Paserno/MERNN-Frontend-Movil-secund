@@ -5,12 +5,15 @@ import { BackgroundChat } from '../components/BackgroundChat';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { UsuarioContext } from '../context/UsuarioContext';
 // import { Usuario } from '../interface/activoInterface';
+import { AuthContext } from '../context/AuthContext';
 
 
 
 export const JardinerosScreen = ({ navigation }: any) => {
 
   const {usuarios, cargarUsuario} = useContext(UsuarioContext);
+  const { user } = useContext( AuthContext );
+
 
   useEffect(() => {
     cargarUsuario();
@@ -18,9 +21,12 @@ export const JardinerosScreen = ({ navigation }: any) => {
 
   
   const renderItem = ({item}:any) => (
-    <Card datos={ item } />
+    ( item._id === user?.uid)
+      ? null 
+      : <Card datos={ item } />
     
   )
+
 
   
   return (
