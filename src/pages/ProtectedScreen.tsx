@@ -46,6 +46,14 @@ export const ProtectedScreen = ({ navigation }: Props) => {
         >
           <Text style={ styles.buttonText}> Mapa</Text>
         </TouchableOpacity>
+        
+        <TouchableOpacity
+        activeOpacity={ 0.8 }
+        onPress={ () => navigation.navigate('EditarScreen', { usuario: user }) }
+        style={ styles.button }
+        >
+          <Text style={ styles.buttonText}> Editar Perfil</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
         activeOpacity={ 0.8 }
