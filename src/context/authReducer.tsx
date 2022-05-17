@@ -15,6 +15,7 @@ type AuthAction =
     |  { type: 'removeError' }
     |  { type: 'notAuthenticated' }
     |  { type: 'logout' }
+    |  { type: 'editUser', payload: any }
 
 
 export const authReducer = ( state: AuthState, action: AuthAction): AuthState => {
@@ -53,6 +54,12 @@ export const authReducer = ( state: AuthState, action: AuthAction): AuthState =>
                 token: null,
                 user: null,
                 logged: false
+            }
+
+        case 'editUser':
+            return {
+                ...state,
+                user: action.payload
             }
 
        

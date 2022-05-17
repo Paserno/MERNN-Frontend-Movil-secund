@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
-import { View, Text, StatusBar, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import React, {useState, useContext} from 'react';
+import { View, Text, StatusBar, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { PlantLogo } from '../components/PlantLogo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation, CommonActions } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
 
 
 
 export const EditarScreen = ({route}:any) => {
+
+  const {editarUser} = useContext(AuthContext)
 
   const {params} = route
   const { nombre, apellido, correo, direccion, ciudad } = params.usuario;
@@ -28,12 +31,29 @@ export const EditarScreen = ({route}:any) => {
           city,
           password } = form;
 
+  const onClick = () => {
+    const uid = params.usuario.uid;
+    console.log(uid)
+    editarUser(uid, name, lastname, password , city, direction );
+
+    Alert.alert('Datos Guardados', 'Los nuevos datos han sido almacenados',[{
+      text: 'Ok',
+      onPress: () => navigator.dispatch(CommonActions.goBack())
+
+  }]);
+
+  }
+
 
   const onChange = (value:any, field:any) => {
     setForm({
       ...form,
       [ field ]: value
   });
+  }
+
+  const todoOk = () => {
+    return (name.length > 1 && lastname.length > 1 && city.length > 1 && direction.length > 1) ? true : false;
   }
 
   return (
@@ -137,6 +157,8 @@ export const EditarScreen = ({route}:any) => {
           <TouchableOpacity
             activeOpacity={ 0.9 }
             style={ styles.button }
+            onPress={ onClick }
+            disabled={ !todoOk() }
           >
             <Text style={ styles.buttonText }>Guardar</Text>
           </TouchableOpacity>

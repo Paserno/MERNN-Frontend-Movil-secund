@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import connectionApi from '../api/ConnectionApi';
 
-import { Usuario, LoginResponse, LoginData, RegisterData } from '../interface/loginInterfaces';
+import { Usuario, LoginResponse, LoginData, RegisterData, EditarData } from '../interface/loginInterfaces';
 import { authReducer, AuthState } from './authReducer';
 import { ChatContext } from './ChatContext';
 
@@ -15,6 +15,7 @@ type AuthContextProps = {
     status: 'checking' | 'authenticated' | 'not-authenticated';
     signUp: ( registerdata :RegisterData) => void;
     signIn: ( logindata: LoginData ) => void;
+    editarUser: (id: string, nombre: string, apellido: string, password: string, ciudad: string, direccion: string) => Promise<void>;
     logOut: () => void;
     removeError: () => void;
 
@@ -115,6 +116,28 @@ export const AuthProvider = ({ children }: any) => {
         }
 
     };
+
+    const editarUser = async( id: string, nombre: string, apellido: string, password: string, ciudad: string, direccion: string )  => {
+        try {
+            // console.log(id, nombre, apellido, password, ciudad, direccion)
+        const { data } = await connectionApi.put<LoginResponse>(`/usuarios/${id}`, 
+                                                                { password, nombre, apellido, ciudad, direccion });
+        
+        console.log(data)
+        dispatchs({
+            type: 'editUser',
+            payload: data
+        });
+
+            
+        } catch (error: any) {
+            dispatchs({
+                type: 'addError',
+                payload: error.response.data.errors[0].msg || 'Revisar Información'
+            })
+        }
+
+    };
     
     const logOut = async() => {
         await AsyncStorage.removeItem('token');
@@ -138,6 +161,7 @@ export const AuthProvider = ({ children }: any) => {
             signIn,
             logOut,
             removeError,
+            editarUser
             
         }}>
             { children }

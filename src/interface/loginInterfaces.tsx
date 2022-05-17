@@ -12,6 +12,15 @@ export interface RegisterData {
     ciudad: string;
     direccion: string;
 }
+
+export interface EditarData {
+    id: string;
+    nombre?: string;
+    apellido?: string;
+    password?: string;
+    ciudad?: string;
+    direccion?: string;
+}
 export interface LoginResponse {
     usuario: Usuario;
     token:   string;
@@ -22,7 +31,10 @@ export interface Usuario {
     estado: boolean;
     google: boolean;
     nombre: string;
+    apellido?: string;
     correo: string;
     uid:    string;
     img?: string;
+    ciudad?: string;
+    direccion?: string;
 }
