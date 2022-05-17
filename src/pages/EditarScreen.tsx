@@ -135,7 +135,7 @@ export const EditarScreen = ({route}:any) => {
           />
 
           <TouchableOpacity
-            activeOpacity={ 0.8 }
+            activeOpacity={ 0.9 }
             style={ styles.button }
           >
             <Text style={ styles.buttonText }>Guardar</Text>

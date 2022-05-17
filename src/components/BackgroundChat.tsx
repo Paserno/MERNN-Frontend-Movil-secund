@@ -10,7 +10,7 @@ export const BackgroundChat = ({children}:any) => {
   return (
     <View style={{ flex: 1 }}>
         <LinearGradient 
-            colors={[ '#5856D6','#AB8DD6', '#D9D6DE']}
+            colors={[ '#3C9020','#84B374', '#D9D6DE']}
             style={{ ...StyleSheet.absoluteFillObject}}
         />
         { children }
