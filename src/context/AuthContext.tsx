@@ -73,17 +73,22 @@ export const AuthProvider = ({ children }: any) => {
     const signIn = async({ correo, password }: LoginData ) => {
         try {
 
-            const { data } = await connectionApi.post<LoginResponse>('/auth/login', { correo, password });
-            dispatchs({
-                type: 'signUp',
-                payload: {
-                    token: data.token,
-                    user: data.usuario,
-                    logged: true
-                }
-            });
+            const { data } = await connectionApi.post<LoginResponse>('/jardin/login', { correo, password });
+            console.log(data);
+            if (data.ok) {
+                dispatchs({
+                    type: 'signUp',
+                    payload: {
+                        token: data.token,
+                        user: data.usuario,
+                        logged: true
+                    }
+                });
+                
 
-            await AsyncStorage.setItem('token', data.token );
+                await AsyncStorage.setItem('token', data.token );
+            }
+
             
         } catch (error: any) {
             dispatchs({

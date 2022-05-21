@@ -22,6 +22,7 @@ export interface EditarData {
     direccion?: string;
 }
 export interface LoginResponse {
+    ok: boolean;
     usuario: Usuario;
     token:   string;
 }

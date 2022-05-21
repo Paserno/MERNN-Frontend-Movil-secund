@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react';
 import { 
     Text, 
     View, 
@@ -62,7 +62,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                 {/* Input Email */}
                 <Text style={ loginStyles.label }>Email:</Text>
                 <TextInput
-                    placeholder='Ingrese su email:'
+                    placeholder='Ingrese su email'
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     keyboardType='email-address'
                     underlineColorAndroid="white"
