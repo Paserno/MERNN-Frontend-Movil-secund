@@ -11,12 +11,15 @@ import { ChatContext } from '../context/ChatContext';
 
 
 
-export const ChatScreen = ({route}: any) => {
+export const ChatScreen = () => {
 
     // En los params.id se recibe el id de la persona seleccionada.
-    const { params} = route;
+    // const { params} = route;
     const { user } = useContext( AuthContext );
     const { chatState } = useContext( ChatContext );
+
+    const params = chatState.chatActivo
+
 
     
     const navigator = useNavigation();
@@ -32,7 +35,7 @@ export const ChatScreen = ({route}: any) => {
     <BackgroundChat>
             <StatusBar  translucent barStyle="light-content" backgroundColor="transparent" />
 
-        <View style={ styles.sectionText }>
+        {/* <View style={ styles.sectionText }>
       <TouchableOpacity
         activeOpacity={ 0.8 }
         onPress={ () => navigator.dispatch(CommonActions.goBack())}
@@ -45,7 +48,7 @@ export const ChatScreen = ({route}: any) => {
             style={{ marginLeft: -20}}
         /> 
       </TouchableOpacity>
-      <Text style={ styles.title}>Chat: {params.nombre}</Text>
+      <Text style={ styles.title}>Chat</Text>
       <TouchableOpacity
         activeOpacity={ 0.8 }
       >
@@ -56,7 +59,7 @@ export const ChatScreen = ({route}: any) => {
           style={{ marginRight: 20}}
       /> 
       </TouchableOpacity>
-    </View>
+    </View> */}
 
     <View style={ styles.contanierBlanco}>
       <View style={ styles.chatMessage}>

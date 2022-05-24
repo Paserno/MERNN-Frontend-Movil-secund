@@ -38,8 +38,7 @@ export const Card = ({datos}: any) => {
 
     navigator.dispatch(
         CommonActions.navigate({
-            name: 'ChatScreen',
-            params: { id: id, nombre: nombre}
+            name: 'TopTabNavigator',
         })
     )
 

@@ -28,7 +28,7 @@ export const SocketProvider = ({children}:any) => {
     
     useEffect(() => {
 
-        socket?.on('recibir-mensajes', (mensaje:any) => {
+        socket?.on('mensaje-personal', (mensaje:any) => {
             dispatch({
                 type: 'nuevoMensaje',
                 payload: mensaje
@@ -37,9 +37,15 @@ export const SocketProvider = ({children}:any) => {
 
     }, [socket, dispatch])
 
+    const desconectarSocketChat = () => {
+        desconectarSocket();
+
+    }
+
     return (
         <SocketContext.Provider value={{
-            socket
+            socket,
+            desconectarSocketChat
         }}>
             { children}
         </SocketContext.Provider>

@@ -5,13 +5,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
 import { SocketContext } from '../../context/SocketContext';
-import { ChatContext } from '../../context/ChatContext';
 
 
 export const SendMessage = ({value}: any) => {
 
     // const {emitirMensaje} = useSocket({} as any );
-    const {dispatch, chatState}= useContext(ChatContext);
 
     const {user} = useContext(AuthContext);
     const {socket} = useContext(SocketContext);
@@ -19,21 +17,8 @@ export const SendMessage = ({value}: any) => {
     const { mensaje, onChange, onReset} = useForm({
         mensaje: ''
     })
-    const { id } = value
+    const id  = value
 
-    // useEffect(() => {
-    //     console.log(socket);
-    //     console.log(chatState);
-    //     socket?.on('mensaje-personal', (mensaje:any) => {
-    //         console.log(mensaje);
-    //         console.log('xd');
-    //         dispatch({
-    //             type: 'nuevoMensaje',
-    //             payload: mensaje
-    //         })
-    //     });
-
-    // }, [socket, dispatch])
 
     const onMessage = () => {
         Keyboard.dismiss();

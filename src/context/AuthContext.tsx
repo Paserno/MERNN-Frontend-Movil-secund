@@ -74,7 +74,6 @@ export const AuthProvider = ({ children }: any) => {
         try {
 
             const { data } = await connectionApi.post<LoginResponse>('/jardin/login', { correo, password });
-            console.log(data);
             if (data.ok) {
                 dispatchs({
                     type: 'signUp',
@@ -128,7 +127,6 @@ export const AuthProvider = ({ children }: any) => {
         const { data } = await connectionApi.put<LoginResponse>(`/usuarios/${id}`, 
                                                                 { password, nombre, apellido, ciudad, direccion });
         
-        console.log(data)
         dispatchs({
             type: 'editUser',
             payload: data

@@ -11,6 +11,7 @@ import { LoadingScreen } from '../pages/LoadingScreen';
 import { JardinerosScreen } from '../pages/JardinerosScreen';
 import { ChatScreen } from '../pages/ChatScreen';
 import { EditarScreen } from '../pages/EditarScreen';
+import { TopTabNavigator } from './TopTab';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ export const StackNav = () => {
                   <Stack.Screen name="Navigator" component={Navigator} />
                   <Stack.Screen name="JardinerosScreen" options={{ title: 'Jardineros'}} component={JardinerosScreen} />
                   <Stack.Screen name="ChatScreen" component={ChatScreen} />
+                  <Stack.Screen name="TopTabNavigator" component={TopTabNavigator} />
                   <Stack.Screen name="EditarScreen" component={EditarScreen} />
                 </>
               )

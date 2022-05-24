@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UsuarioContext } from '../context/UsuarioContext';
 import { PlantLogo } from '../components/PlantLogo';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { SocketContext } from '../context/SocketContext';
 
 
 interface Props extends StackScreenProps<any, any> {}
@@ -16,10 +17,17 @@ export const ProtectedScreen = ({ navigation }: Props) => {
   const { user, token, logOut } = useContext( AuthContext );
 
   const {cargarUsuario} = useContext(UsuarioContext);
+  const {desconectarSocketChat} = useContext(SocketContext);
+
 
   useEffect(() => {
       cargarUsuario();
     }, [])
+
+    const onClickLogOut = () =>{
+      logOut()
+      desconectarSocketChat()
+    }
 
   return (
     <View style={ styles.container }>
@@ -71,7 +79,7 @@ export const ProtectedScreen = ({ navigation }: Props) => {
 
         <TouchableOpacity
           activeOpacity={ 0.6 }
-          onPress={ logOut }
+          onPress={ onClickLogOut }
           style={ styles.buttonLogout }
         >
           <Text style={ styles.buttonTextLogout}>Logout </Text>
