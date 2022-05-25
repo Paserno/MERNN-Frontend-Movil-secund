@@ -138,9 +138,9 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
-
+    // com.paserno.atjjardinero
     defaultConfig {
-        applicationId "com.rutasapp"
+        applicationId "com.paserno.atjjardinero"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
