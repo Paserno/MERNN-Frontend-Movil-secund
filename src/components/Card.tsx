@@ -14,9 +14,8 @@ export const Card = ({datos}: any) => {
 
     const uri = 'https://www.xtrafondos.com/wallpapers/paisaje-digital-en-atardecer-5846.jpg'
     
-    const {nombre, apellido, jardinero, _id: id} = datos 
-    const especialidad = jardinero.especialidad;
-    
+    const usuario = datos.idUsuario
+    const {nombre, apellido, _id: id, correo} = usuario 
     
     const navigator = useNavigation();
 
@@ -58,9 +57,9 @@ export const Card = ({datos}: any) => {
                 source={{ uri }}
             />
             <View style={styles.textSection}> 
-               <Text style={ styles.userName }>{nombre} {apellido}</Text>
+               <Text style={ styles.userName }> {nombre} {apellido} </Text>
             
-               <Text style={ styles.userName }>Especialidad: {especialidad}</Text>
+               <Text style={ styles.userName }>Correo: { correo } </Text>
 
             </View>
             <View style={{ right: 20}}>

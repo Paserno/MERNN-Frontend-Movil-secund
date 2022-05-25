@@ -15,13 +15,14 @@ interface Props extends StackScreenProps<any, any> {}
 export const ProtectedScreen = ({ navigation }: Props) => {
 
   const { user, token, logOut } = useContext( AuthContext );
+  const uid = user?.uid;
 
-  const {cargarUsuario} = useContext(UsuarioContext);
+  const { loginJardinero } = useContext(UsuarioContext);
   const {desconectarSocketChat} = useContext(SocketContext);
 
 
   useEffect(() => {
-      cargarUsuario();
+      loginJardinero(uid);
     }, [])
 
     const onClickLogOut = () =>{
@@ -47,13 +48,13 @@ export const ProtectedScreen = ({ navigation }: Props) => {
           { token }
         </Text> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
         activeOpacity={ 0.8 }
         onPress={ () => navigation.navigate('Navigator') }
         style={ styles.button }
         >
           <Text style={ styles.buttonText}> Mapa</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         
         <TouchableOpacity
         activeOpacity={ 0.8 }

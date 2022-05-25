@@ -11,13 +11,13 @@ import { AuthContext } from '../context/AuthContext';
 
 export const JardinerosScreen = ({ navigation }: any) => {
 
-  const {usuarios, cargarUsuario} = useContext(UsuarioContext);
+  const { solicitudes } = useContext(UsuarioContext);
   const { user } = useContext( AuthContext );
 
 
-  useEffect(() => {
-    cargarUsuario();
-  }, [])
+  // useEffect(() => {
+  //   cargarSolicitudUsuario();
+  // }, [])
 
   
   const renderItem = ({item}:any) => (
@@ -44,7 +44,7 @@ export const JardinerosScreen = ({ navigation }: any) => {
             style={{ marginLeft: -20}}
         /> 
       </TouchableOpacity>
-      <Text style={ styles.title}>Jardineros</Text>
+      <Text style={ styles.title}>Solicitudes</Text>
       <TouchableOpacity
         activeOpacity={ 0.8 }
       >
@@ -61,7 +61,7 @@ export const JardinerosScreen = ({ navigation }: any) => {
       {/* <ScrollView> */}
         <View style={ styles.contanier }>
             <FlatList 
-              data={ usuarios }
+              data={ solicitudes }
               keyExtractor={ (item) => item._id }
               renderItem={ renderItem }
               // horizontal={ true }

@@ -11,6 +11,8 @@ const initialState = {
     jardineros: [],
     jardinero: {},
     usuario: {},   // Un Registro de la BD
+    jid: '',
+    solicitudes: []
 }
 
 export const UsuarioContext = createContext({} as any);
@@ -19,15 +21,14 @@ export const UsuarioProvider = ({ children }: any ) => {
 
     const [state, dispatch] = useReducer(usuarioReducer, initialState)
 
-    const cargarUsuario = async() => {
+    const cargarSolicitudUsuario = async(id: string) => {
         try {
-        const {data} = await connectionApi.get('/jardin', {});
-
+        const {data} = await connectionApi.get(`/soli/${id}`, {});
         if (data.ok){
-            const usuarios = data.usuarios
+            const solicitudes = data.solicitudes
             dispatch({
-                type: 'cargarUsuarios',
-                payload: usuarios
+                type: 'cargarSolicitudUsuario',
+                payload: solicitudes
                 
             })
         }
@@ -37,10 +38,30 @@ export const UsuarioProvider = ({ children }: any ) => {
         }
     }
 
+    const loginJardinero = async(id: string) => {
+        try {
+        const {data} = await connectionApi.get(`/admin/jardin/${id}`, {});
+            if (data.ok) {
+                const jardinero = data.jardinero 
+                cargarSolicitudUsuario(jardinero._id);
+
+                dispatch({
+                    type: 'loginJardinero',
+                    payload: jardinero
+                })
+
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <UsuarioContext.Provider value={{
             ...state,
-            cargarUsuario
+             cargarSolicitudUsuario,
+             loginJardinero
         }}>
             { children }
         </UsuarioContext.Provider>
