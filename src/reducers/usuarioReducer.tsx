@@ -3,6 +3,9 @@
 type UsuarioAction = 
 |  { type: 'cargarSolicitudUsuario', payload: any }
 |  { type: 'loginJardinero', payload: any }
+|  { type: 'SeleccionarSolicitud', payload: any }
+|  { type: 'ActualizarSolicitud', payload: any }
+|  { type: 'SolicitudEliminada'}
 
 export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
 
@@ -10,7 +13,8 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
         case 'cargarSolicitudUsuario':
             return {
                 ...state,
-                solicitudes: action.payload
+                solicitudes: action.payload,
+                deleteSoli: false
             };
 
         case 'loginJardinero':
@@ -20,6 +24,27 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
                 jid: action.payload._id
             }
         
+        case 'SeleccionarSolicitud': 
+            return {
+                ...state,
+                deleteSoli: false,
+                solicitud: action.payload,
+            }
+
+        case 'ActualizarSolicitud':
+            return {
+                ...state,
+                solicitud: action.payload,
+                deleteSoli: false
+
+            }
+
+        case 'SolicitudEliminada': 
+            return {
+                ...state,
+                solicitud: {},
+                deleteSoli: true
+            }
     
         default:
             return state;

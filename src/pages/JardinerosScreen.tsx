@@ -11,13 +11,14 @@ import { AuthContext } from '../context/AuthContext';
 
 export const JardinerosScreen = ({ navigation }: any) => {
 
-  const { solicitudes } = useContext(UsuarioContext);
+  const { solicitudes, loginJardinero } = useContext(UsuarioContext);
   const { user } = useContext( AuthContext );
+  const uid = user?.uid;
 
 
-  // useEffect(() => {
-  //   cargarSolicitudUsuario();
-  // }, [])
+  useEffect(() => {
+    loginJardinero(uid);
+  }, [])
 
   
   const renderItem = ({item}:any) => (

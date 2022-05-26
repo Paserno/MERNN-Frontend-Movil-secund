@@ -12,7 +12,9 @@ const initialState = {
     jardinero: {},
     usuario: {},   // Un Registro de la BD
     jid: '',
-    solicitudes: []
+    solicitudes: [],
+    solicitud: {}, // Solicitud Seleccionada.
+    deleteSoli: false
 }
 
 export const UsuarioContext = createContext({} as any);
@@ -57,11 +59,49 @@ export const UsuarioProvider = ({ children }: any ) => {
         }
     }
 
+    const selecionarSolicitud = async(idSolicitud: string) => {
+        try {
+            const id = idSolicitud;
+            const {data} = await connectionApi.get(`/soli/detalle/${id}`, {});
+
+            // data.detalleSolicitud tiene algunas solicitudes del jardinero.
+
+            if (data.ok){
+                const solicitud = data.solicitud
+                dispatch({
+                    type: 'SeleccionarSolicitud',
+                    payload: solicitud
+                })
+                
+            }
+
+        } catch (error:any) {
+            console.log(error.response.data)
+            console.log(error.response.data.errors[0])
+        }
+    }
+
+    const actualizarSolicitud = (solicitud: any) => {
+        dispatch({
+            type: 'ActualizarSolicitud',
+            payload: solicitud
+        })
+    }
+
+    const solicitudEliminada = () => {
+        dispatch({
+            type: 'SolicitudEliminada'
+        })
+    }
+
     return (
         <UsuarioContext.Provider value={{
             ...state,
              cargarSolicitudUsuario,
-             loginJardinero
+             loginJardinero,
+             selecionarSolicitud,
+             actualizarSolicitud,
+             solicitudEliminada,
         }}>
             { children }
         </UsuarioContext.Provider>
