@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, ScrollView} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react'
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, FlatList, RefreshControl} from 'react-native';
 import { Card } from '../components/Card';
 import { BackgroundChat } from '../components/BackgroundChat';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,12 +13,22 @@ export const JardinerosScreen = ({ navigation }: any) => {
 
   const { solicitudes, loginJardinero } = useContext(UsuarioContext);
   const { user } = useContext( AuthContext );
+  const [refreshing, setRefreshing] = useState(false)
+
   const uid = user?.uid;
 
 
   useEffect(() => {
     loginJardinero(uid);
   }, [])
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    
+    loginJardinero(uid);
+    setRefreshing(false);
+  }
 
   
   const renderItem = ({item}:any) => (
@@ -68,6 +78,13 @@ export const JardinerosScreen = ({ navigation }: any) => {
               // horizontal={ true }
               showsVerticalScrollIndicator={ false}
               style={{ width: 350, height: 75, marginBottom: 10}}
+              refreshControl={
+                <RefreshControl 
+                  refreshing={ refreshing }
+                  onRefresh={ onRefresh }
+                  progressViewOffset={ 50 }
+                />
+              }
             />
             
             {/* <Card /> */}
