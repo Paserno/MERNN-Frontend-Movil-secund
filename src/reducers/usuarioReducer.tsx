@@ -6,6 +6,8 @@ type UsuarioAction =
 |  { type: 'SeleccionarSolicitud', payload: any }
 |  { type: 'ActualizarSolicitud', payload: any }
 |  { type: 'SolicitudEliminada'}
+|  { type: 'CargarServicios', payload: any }
+
 
 export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
 
@@ -45,6 +47,13 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
                 solicitud: {},
                 deleteSoli: true
             }
+
+        case 'CargarServicios': 
+            return {
+                ...state,
+                servicios: action.payload
+            }
+        
     
         default:
             return state;

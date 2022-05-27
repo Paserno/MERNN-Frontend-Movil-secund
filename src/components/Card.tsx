@@ -12,7 +12,7 @@ import { UsuarioContext } from '../context/UsuarioContext';
 export const Card = ({datos}: any) => {
 
     const {dispatch} = useContext(ChatContext);
-    const {selecionarSolicitud} = useContext(UsuarioContext)
+    const {selecionarSolicitud, obtenerServicios} = useContext(UsuarioContext)
     
     const uri = 'https://www.xtrafondos.com/wallpapers/paisaje-digital-en-atardecer-5846.jpg'
     
@@ -25,6 +25,7 @@ export const Card = ({datos}: any) => {
    const onClick = async() => {
     const idSolicitud = datos._id
     selecionarSolicitud(idSolicitud);
+    obtenerServicios();
 
     dispatch({
         type: 'ActivarChat',

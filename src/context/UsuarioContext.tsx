@@ -14,7 +14,8 @@ const initialState = {
     jid: '',
     solicitudes: [],
     solicitud: {}, // Solicitud Seleccionada.
-    deleteSoli: false
+    deleteSoli: false,
+    servicios: []
 }
 
 export const UsuarioContext = createContext({} as any);
@@ -94,6 +95,26 @@ export const UsuarioProvider = ({ children }: any ) => {
         })
     }
 
+    const obtenerServicios = async() => {
+        try {
+            const {data} = await connectionApi.get('/tipo/?limite=100', {});
+            console.log(data);
+
+            if (data.ok) {
+                dispatch({
+                    type: 'CargarServicios',
+                    payload: data.servicios
+                })
+            }
+        
+            
+        } catch (error: any) {
+            console.log(error.response.data)
+            console.log(error.response.data.errors[0])
+        }
+
+    }
+
     return (
         <UsuarioContext.Provider value={{
             ...state,
@@ -102,6 +123,7 @@ export const UsuarioProvider = ({ children }: any ) => {
              selecionarSolicitud,
              actualizarSolicitud,
              solicitudEliminada,
+             obtenerServicios,
         }}>
             { children }
         </UsuarioContext.Provider>
