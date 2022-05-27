@@ -14,19 +14,24 @@ export const OutComingMessage = ({mss}:any) => {
 }
 const styles = StyleSheet.create({
     container: {
-      maxWidth: 300,
+      minWidth: 10,
+      minHeight: 10,
       maxHeight: 200,
       backgroundColor: 'white',
       marginBottom: 10,
       marginLeft: 30,
-      righ: -100,
+      marginRight: 50,
+      // righ: -100,
+      alignSelf: 'flex-start',
       borderBottomEndRadius: 20,
       borderTopStartRadius: 20,
       borderTopEndRadius: 20,
+      marginTop: 2
     },
     text : {
       color: 'black',
-      margin: 7,
-      fontSize: 15
+      margin: 10,
+      fontSize: 15,
+      // marginLeft: 15
     }
 });

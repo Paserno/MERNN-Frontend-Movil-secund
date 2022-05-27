@@ -70,7 +70,7 @@ export const ChatScreen = () => {
               renderItem={ renderItem }
               showsVerticalScrollIndicator={ false}
               style={{ width: '100%' }}
-              contentContainerStyle={{ justifyContent: 'flex-end' }}
+              contentContainerStyle={{ justifyContent: 'flex-end',  }}
               inverted
             />
             {/* <OutComingMessage />

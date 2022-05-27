@@ -56,16 +56,15 @@ export const SocketProvider = ({children}:any) => {
     }, [socket])
 
     useEffect(() => {
-        socket?.on('eliminar-detalle-solicitud', (detalleSolicitud:any) => {
-            eliminarDetalleSolicitud(detalleSolicitud);
+        socket?.on('crear-detalle-solicitud', (detalleSolicitud:any) => {
+            crearDetalleSolicitud(detalleSolicitud)
         });
       
     }, [socket])
 
     useEffect(() => {
-        socket?.on('crear-detalle-solicitud', (detalleSolicitud:any) => {
-            console.log(detalleSolicitud)
-            crearDetalleSolicitud(detalleSolicitud)
+        socket?.on('eliminar-detalle-solicitud', (detalleSolicitud:any) => {
+            eliminarDetalleSolicitud(detalleSolicitud);
         });
       
     }, [socket])
