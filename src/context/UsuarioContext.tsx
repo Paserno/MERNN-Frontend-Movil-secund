@@ -15,7 +15,8 @@ const initialState = {
     solicitudes: [],
     solicitud: {}, // Solicitud Seleccionada.
     deleteSoli: false,
-    servicios: []
+    servicios: [],
+    detalleSolicitud: []
 }
 
 export const UsuarioContext = createContext({} as any);
@@ -98,7 +99,7 @@ export const UsuarioProvider = ({ children }: any ) => {
     const obtenerServicios = async() => {
         try {
             const {data} = await connectionApi.get('/tipo/?limite=100', {});
-            console.log(data);
+            // console.log(data);
 
             if (data.ok) {
                 dispatch({
@@ -115,6 +116,41 @@ export const UsuarioProvider = ({ children }: any ) => {
 
     }
 
+    const obtenerDetalleSolicitud = async(idSolicitud: any) => {
+        try {
+            const {data} = await connectionApi.get(`/soli/detalle/${idSolicitud}`, {});
+            // console.log(data);
+
+            if (!data.msg){
+                return dispatch({
+                    type: 'CargarDetalleSolicitud',
+                    payload: data.detalleSolicitud
+                })
+            }
+            dispatch({
+                type: 'CargaDetalleVacia',
+            })
+            
+        } catch (error: any) {
+            console.log(error.response.data)
+            console.log(error.response.data.errors[0])
+        }
+    }
+
+    const eliminarDetalleSolicitud = async(detalleSolicitud: any) => {
+        dispatch({
+            type: 'EliminarDetalleSolicitud',
+            payload: detalleSolicitud
+        })
+    }
+
+    const crearDetalleSolicitud = async(detalleSolicitud: any) => {
+        dispatch({
+            type: 'NuevoDetalleSolicitud',
+            payload: detalleSolicitud
+        })
+    }
+
     return (
         <UsuarioContext.Provider value={{
             ...state,
@@ -124,6 +160,9 @@ export const UsuarioProvider = ({ children }: any ) => {
              actualizarSolicitud,
              solicitudEliminada,
              obtenerServicios,
+             obtenerDetalleSolicitud,
+            eliminarDetalleSolicitud,
+            crearDetalleSolicitud,
         }}>
             { children }
         </UsuarioContext.Provider>

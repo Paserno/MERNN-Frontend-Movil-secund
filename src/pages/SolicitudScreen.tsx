@@ -3,11 +3,14 @@ import React, { useState, useContext, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, Pressable, Switch, TouchableOpacity, TextInput } from 'react-native';
 import { UsuarioContext } from '../context/UsuarioContext';
 import { Box, CheckIcon, Select } from "native-base";
+import { Table } from '../components/Table';
+import { SocketContext } from '../context/SocketContext';
 
 export const SolicitudScreen = ({ navigation }: any) => {
   const popAction = StackActions.pop(1);
   const popActions = StackActions.pop(2);
-  const { solicitud, deleteSoli, servicios } = useContext(UsuarioContext);
+  const { solicitud, deleteSoli, servicios, obtenerDetalleSolicitud } = useContext(UsuarioContext);
+  const {socket} = useContext(SocketContext)
   const [isEnabled, setIsEnabled] = useState(solicitud.confirmacion);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -28,6 +31,12 @@ export const SolicitudScreen = ({ navigation }: any) => {
     }
   }, [solicitud])
 
+  useEffect(() => {
+      
+      const idSolicitud = solicitud._id;
+      obtenerDetalleSolicitud(idSolicitud);
+  }, [solicitud])
+
   const toggleSwitch = () => {
     setIsEnabled(!isEnabled)
   };
@@ -39,9 +48,15 @@ export const SolicitudScreen = ({ navigation }: any) => {
 
   const onSave = () => {
     const sid = solicitud._id;
-    console.log('id solicitud: ', sid);
-    console.log('id TipoServicio: ', service);
-    console.log('Precio del Servicio: ', form.precio);
+    // console.log('id solicitud: ', sid);
+    // console.log('id TipoServicio: ', service);
+    // console.log('Precio del Servicio: ', form.precio);
+
+    socket.emit( 'crear-detalle-solicitud',{
+      idSolicitud: sid,
+      idTipoServicio: service,
+      precio: form.precio
+ })
     
 
     setIsVisible(false);
@@ -176,12 +191,16 @@ export const SolicitudScreen = ({ navigation }: any) => {
           />
         </Text>
 
+        <View style={styles.containerTable}>
+          <Table />
+        </View>
+
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => setIsVisible(true)}
-          style={{ ...styles.blackButton, marginBottom: 10 }}
+          style={{ ...styles.blackButton, marginBottom: 10, marginTop: 10 }}
         >
-          <Text style={styles.buttonText}>Abrir Modal</Text>
+          <Text style={styles.buttonText}>Nuevo Servicio</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -323,5 +342,13 @@ const styles = StyleSheet.create({
   form: {
     marginLeft: 20,
     marginRight: 20,
-  }
+  },
+  containerTable: {
+    height: 230,
+    marginTop: 30,
+    width: '100%', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    
+  },
 });

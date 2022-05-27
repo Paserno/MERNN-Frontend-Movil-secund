@@ -7,6 +7,13 @@ type UsuarioAction =
 |  { type: 'ActualizarSolicitud', payload: any }
 |  { type: 'SolicitudEliminada'}
 |  { type: 'CargarServicios', payload: any }
+|  { type: 'CargarDetalleSolicitud', payload: any}
+|  { type: 'CargaDetalleVacia'}
+|  { type: 'EliminarDetalleSolicitud', payload: any}
+|  { type: 'NuevoDetalleSolicitud', payload: any}
+
+
+
 
 
 export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
@@ -53,7 +60,34 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
                 ...state,
                 servicios: action.payload
             }
+
+        case 'CargarDetalleSolicitud':
+            return {
+                ...state,
+                detalleSolicitud: action.payload
+            }
         
+        case 'CargaDetalleVacia':
+            return {
+                ...state,
+                detalleSolicitud: []
+            }
+        
+        case 'EliminarDetalleSolicitud':
+            return {
+                ...state,
+                detalleSolicitud: state.detalleSolicitud.filter(
+                    (e: { _id: string }) => ( e._id === action.payload._id)
+                        ? false
+                        : true
+                )
+            }
+
+        case 'NuevoDetalleSolicitud':
+            return {
+                ...state,
+                detalleSolicitud: [...state.detalleSolicitud, action.payload]
+            }
     
         default:
             return state;
