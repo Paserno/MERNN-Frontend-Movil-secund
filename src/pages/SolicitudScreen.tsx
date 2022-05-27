@@ -2,14 +2,19 @@ import { StackActions } from '@react-navigation/native';
 import React, { useState, useContext, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, Pressable, Switch, TouchableOpacity, TextInput } from 'react-native';
 import { UsuarioContext } from '../context/UsuarioContext';
+import { Box, CheckIcon, Select } from "native-base";
 
 export const SolicitudScreen = ({ navigation }: any) => {
   const popAction = StackActions.pop(1);
   const popActions = StackActions.pop(2);
-  const { solicitud, deleteSoli } = useContext(UsuarioContext);
+  const { solicitud, deleteSoli, servicios } = useContext(UsuarioContext);
   const [isEnabled, setIsEnabled] = useState(solicitud.confirmacion);
 
   const [isVisible, setIsVisible] = useState(false);
+  const [service, setService] = useState('');
+  const [form, setForm] = useState({
+    precio: ''
+  });
 
 
   useEffect(() => {
@@ -30,6 +35,24 @@ export const SolicitudScreen = ({ navigation }: any) => {
   const volverAtras = () => {
     console.log('Salgo')
     navigation.dispatch(popActions);
+  }
+
+  const onSave = () => {
+    const sid = solicitud._id;
+    console.log('id solicitud: ', sid);
+    console.log('id TipoServicio: ', service);
+    console.log('Precio del Servicio: ', form.precio);
+    
+
+    setIsVisible(false);
+    setService('');
+  } 
+
+  const onChange = (value:any, field:any) => {
+    setForm({
+      ...form,
+      [ field ]: value
+  });
   }
 
 
@@ -53,17 +76,52 @@ export const SolicitudScreen = ({ navigation }: any) => {
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, color: 'black' }}>Agregar Servicio</Text>
               </View>
 
-              <Text style={{ fontSize: 16, fontWeight: '300', marginBottom: 20, alignSelf: 'center' }}>Cuerpo del modal</Text>
+              <View style={{marginLeft: 22, bottom:30}}>
+              <Text style={styles.label}>Servicio:</Text>
+                <Box 
+                  w="3/4" 
+                  maxW="600"
+                >
+                  <Select 
+                    selectedValue={service} 
+                    bgColor='violet.50'
 
-              <View style={styles.form}>
+                    minWidth="300" 
+                    accessibilityLabel="Elija el Servicio" 
+                    fontSize="lg"
+                    placeholder="Elija el Servicio" 
+                    _selectedItem={{
+                      bg: "teal.600",
+                      endIcon: <CheckIcon size="5" />
+                    }} 
+                    mt={1} 
+                    onValueChange={itemValue => setService(itemValue)}
+                  >
+                    {
+                      servicios.map( (servicio: any, index:any) => (
+                        <Select.Item
+                          
+                          label={servicio.nombre}
+                          value={servicio._id}
+                          key={index}
+                        />
+                      ))
+                    }
+                  </Select>
+                </Box>
+              </View>
+
+
+
+              <View style={{...styles.form, bottom:25}}>
                 <Text style={styles.label}>Precio:</Text>
                 <TextInput
                   placeholder='Ingresar valor'
                   placeholderTextColor="rgba(0,0,0,0.4)"
                   style={styles.inputField}
                   selectionColor="black"
-                  // onChangeText={(value) => onChange(value, 'name')}
-                  // value={name}
+                  onChangeText={(value) => onChange(value, 'precio')}
+                  value={form.precio}
                   // onSubmitEditing={  }
                   autoCapitalize='none'
                   autoCorrect={false}
@@ -76,15 +134,15 @@ export const SolicitudScreen = ({ navigation }: any) => {
               <View style={styles.sectionBtn}>
                 <Pressable
                   // activeOpacity={0.8}
-                  onPress={() => setIsVisible(false)}
+                  onPress={onSave}
 
                   style={{ ...styles.blackButton, marginBottom: 10, alignSelf: 'center' }}
                 >
-                  <Text style={styles.buttonText}>Guardar</Text>
+                  <Text style={styles.buttonText}>Crear</Text>
                 </Pressable>
                 <Pressable
                   // activeOpacity={0.8}
-                  onPress={() => setIsVisible(false)}
+                  onPress={() => {setIsVisible(false), setService('')}}
 
                   style={{ marginBottom: 15 }}
                 >
@@ -125,15 +183,6 @@ export const SolicitudScreen = ({ navigation }: any) => {
         >
           <Text style={styles.buttonText}>Abrir Modal</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => console.log('hola')}
-          style={styles.blackButton}
-        >
-          <Text style={styles.buttonText}>Confirmar</Text>
-        </TouchableOpacity>
-
 
         <TouchableOpacity
           activeOpacity={0.8}
@@ -257,12 +306,13 @@ const styles = StyleSheet.create({
     width: '100%',
     // backgroundColor:'red'
   },
-  label:{
+  label: {
     marginTop: 25,
     color: 'black',
     fontWeight: 'bold',
+    fontSize: 15,
   },
-  inputField:{
+  inputField: {
     color: 'black',
     fontSize: 20,
     borderBottomColor: 'black',

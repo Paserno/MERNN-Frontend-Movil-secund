@@ -7,6 +7,7 @@ import { AuthProvider } from './src/context/AuthContext';
 import { UsuarioProvider } from './src/context/UsuarioContext';
 import { SocketProvider } from './src/context/SocketContext';
 import { ChatProvider } from './src/context/ChatContext';
+import { NativeBaseProvider } from "native-base";
 
 
 const AppState = ({ children }: any) => {
@@ -29,9 +30,11 @@ const AppState = ({ children }: any) => {
 const App = () => {
   return (
     <NavigationContainer>
-      <AppState>
-        <StackNav />
-      </AppState>
+      <NativeBaseProvider>
+        <AppState>
+          <StackNav />
+        </AppState>
+      </NativeBaseProvider>
     </NavigationContainer>
   )
 }
