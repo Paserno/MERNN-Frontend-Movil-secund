@@ -1,6 +1,8 @@
 import { StackActions } from '@react-navigation/native';
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, StyleSheet, Modal, Pressable, Switch, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Switch, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import { UsuarioContext } from '../context/UsuarioContext';
 import { Box, CheckIcon, Select } from "native-base";
 import { Table } from '../components/Table';
@@ -136,6 +138,21 @@ export const SolicitudScreen = ({ navigation }: any) => {
 
   const deshabiltarInicioServicio = () => {
     return (solicitud.confirmacion) ? true : false; 
+  }
+
+  const alertSave = () => {
+    Alert.alert('Guardado', 'Se han guardado los cambios',[{
+      text: 'Ok',
+      onPress: guardarCambios
+  }]);
+  }
+
+  const guardarCambios = () => {
+    
+    socket.emit( 'cambio-solicitud',{
+             id: solicitud._id,
+             start: isSecundEnabled
+        })
   }
 
   return (
@@ -354,6 +371,25 @@ export const SolicitudScreen = ({ navigation }: any) => {
           <Text style={styles.buttonText}>Volver</Text>
         </TouchableOpacity>
 
+        <View style={{
+          position: 'absolute',
+          top: 20,
+          left: 20
+        }}>
+          <TouchableOpacity
+              activeOpacity={ 0.8 }
+              onPress={ alertSave }
+              style={styles.FAButton}
+          >
+              <Icon 
+                  name={ 'save-sharp' }
+                  color="white"
+                  size={ 30 }
+                  style={{ }}
+              /> 
+          </TouchableOpacity>
+        </View>
+
       </View>
     </View>
   )
@@ -420,7 +456,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
     height: 50,
     width: 50,
-    backgroundColor: '#c9302c',
+    backgroundColor: 'black',
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',

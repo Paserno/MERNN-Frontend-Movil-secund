@@ -20,14 +20,20 @@ export const ItemTable = ({item}:any) => {
       },
       {
         text: 'Aceptar',
-        onPress: () => setIsEnabled(true)
+        onPress: () => {setIsEnabled(true), cambiarEstadoRealizado()}
       }
     ])
       )
       : null
-
-    
   };
+
+  const cambiarEstadoRealizado = () => {
+    socket.emit( 'cambio-detalle-solicitud',{
+      id: item._id,
+      realizado: true
+    })
+  }
+
   
   const onClick = () => {
     selecionarDetalleSolicitud(item);
@@ -90,7 +96,8 @@ const styles = StyleSheet.create({
       marginLeft: 10,
       marginRight: 10,
       flexDirection: 'row'
-    }
+    },
+    
 });
 
 // 
