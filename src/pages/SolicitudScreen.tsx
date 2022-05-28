@@ -1,6 +1,6 @@
 import { StackActions } from '@react-navigation/native';
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, StyleSheet, Modal, Pressable, Switch, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Switch, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 import { UsuarioContext } from '../context/UsuarioContext';
 import { Box, CheckIcon, Select } from "native-base";
 import { Table } from '../components/Table';
@@ -9,7 +9,7 @@ import { SocketContext } from '../context/SocketContext';
 export const SolicitudScreen = ({ navigation }: any) => {
   const popAction = StackActions.pop(1);
   const popActions = StackActions.pop(2);
-  const { solicitud, deleteSoli, servicios, obtenerDetalleSolicitud } = useContext(UsuarioContext);
+  const { solicitud, deleteSoli, servicios, obtenerDetalleSolicitud, servicio, isLoadingModal, quitarLoading, isOpenModal, cerrarModalSolicitud } = useContext(UsuarioContext);
   const {socket} = useContext(SocketContext)
   const [isEnabled, setIsEnabled] = useState(solicitud.confirmacion);
 
@@ -19,6 +19,14 @@ export const SolicitudScreen = ({ navigation }: any) => {
     precio: ''
   });
 
+  useEffect(() => {
+    if ( isOpenModal ) {
+      setIsVisible(true)
+      openEditModal();
+    }
+    
+  }, [isOpenModal])
+  
 
   useEffect(() => {
     const valueConfirm = solicitud.confirmacion
@@ -29,10 +37,9 @@ export const SolicitudScreen = ({ navigation }: any) => {
     if (deleteSoli) {
       volverAtras();
     }
-  }, [solicitud])
+  }, [deleteSoli])
 
   useEffect(() => {
-      
       const idSolicitud = solicitud._id;
       obtenerDetalleSolicitud(idSolicitud);
   }, [solicitud])
@@ -46,21 +53,48 @@ export const SolicitudScreen = ({ navigation }: any) => {
     navigation.dispatch(popActions);
   }
 
+  const openEditModal = () => {
+    let precioEdit = servicio.precio
+    precioEdit = String(precioEdit)
+    setService(servicio.idTipoServicio._id)
+    setForm({
+      precio: precioEdit
+    })
+  }
+
   const onSave = () => {
     const sid = solicitud._id;
-    // console.log('id solicitud: ', sid);
-    // console.log('id TipoServicio: ', service);
-    // console.log('Precio del Servicio: ', form.precio);
+    // cambio-detalle-solicitud
+    socket.emit( 'cambio-detalle-solicitud',{
+      id: servicio._id,
+      idSolicitud: sid,
+      idTipoServicio: service,
+      precio: form.precio
+    })
 
+    setIsVisible(false);
+    setService('');
+    setForm({
+      precio: ''
+    })
+    cerrarModalSolicitud()
+  }
+
+
+  const onCreate = () => {
+    const sid = solicitud._id;
+   
     socket.emit( 'crear-detalle-solicitud',{
       idSolicitud: sid,
       idTipoServicio: service,
       precio: form.precio
- })
-    
-
+    })
     setIsVisible(false);
     setService('');
+    setForm({
+      precio: ''
+    })
+    cerrarModalSolicitud()
   } 
 
   const onChange = (value:any, field:any) => {
@@ -75,7 +109,7 @@ export const SolicitudScreen = ({ navigation }: any) => {
     <View style={styles.conteiner}>
       <View style={styles.subConteiner}>
 
-        <Text style={styles.title}>SolicitudScreen</Text>
+        <Text style={styles.title}>Solicitud </Text>
 
         {/* ------------------------ Modal ------------------------------ */}
         <Modal
@@ -91,6 +125,14 @@ export const SolicitudScreen = ({ navigation }: any) => {
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, color: 'black' }}>Agregar Servicio</Text>
               </View>
 
+              
+              {
+                (isLoadingModal) 
+                  ? (<ActivityIndicator 
+                    size={ 50 }
+                    color='black'
+                  />)
+                  : ( <>
               <View style={{marginLeft: 22, bottom:30}}>
               <Text style={styles.label}>Servicio:</Text>
                 <Box 
@@ -113,21 +155,19 @@ export const SolicitudScreen = ({ navigation }: any) => {
                     onValueChange={itemValue => setService(itemValue)}
                   >
                     {
-                      servicios.map( (servicio: any, index:any) => (
+                      servicios.map( (serv: any, index:any) => (
                         <Select.Item
                           
-                          label={servicio.nombre}
-                          value={servicio._id}
+                          label={serv.nombre}
+                          value={serv._id}
                           key={index}
                         />
                       ))
                     }
                   </Select>
                 </Box>
+
               </View>
-
-
-
               <View style={{...styles.form, bottom:25}}>
                 <Text style={styles.label}>Precio:</Text>
                 <TextInput
@@ -144,20 +184,44 @@ export const SolicitudScreen = ({ navigation }: any) => {
                 />
 
               </View>
+                    
+              </>)
+              }
+
+              
 
 
               <View style={styles.sectionBtn}>
+
+              {
+                (isOpenModal)
+                  ? (
+                    <Pressable
+                    onPress={onSave}
+  
+                    style={{ ...styles.blackButton, marginBottom: 10, alignSelf: 'center' }}
+                  >
+                    <Text style={styles.buttonText}>Guardar</Text>
+                  </Pressable>
+                  )
+                  :(
                 <Pressable
-                  // activeOpacity={0.8}
-                  onPress={onSave}
+                  onPress={onCreate}
 
                   style={{ ...styles.blackButton, marginBottom: 10, alignSelf: 'center' }}
                 >
                   <Text style={styles.buttonText}>Crear</Text>
                 </Pressable>
+                  )
+              }
+                
+
+               
+
                 <Pressable
-                  // activeOpacity={0.8}
-                  onPress={() => {setIsVisible(false), setService('')}}
+                  onPress={() => {setIsVisible(false), setService(''), setForm({
+                    precio: ''
+                  }), cerrarModalSolicitud()}}
 
                   style={{ marginBottom: 15 }}
                 >
@@ -197,7 +261,7 @@ export const SolicitudScreen = ({ navigation }: any) => {
 
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => setIsVisible(true)}
+          onPress={() => {setIsVisible(true), quitarLoading()} }
           style={{ ...styles.blackButton, marginBottom: 10, marginTop: 10 }}
         >
           <Text style={styles.buttonText}>Nuevo Servicio</Text>

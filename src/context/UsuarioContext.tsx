@@ -6,7 +6,7 @@ import connectionApi from '../api/ConnectionApi';
 
 
 const initialState = {
-    isLoading: true,
+    // isLoading: true,
     usuarios: [],   // Todos los usuartios de la base de dato
     jardineros: [],
     jardinero: {},
@@ -16,6 +16,9 @@ const initialState = {
     solicitud: {}, // Solicitud Seleccionada.
     deleteSoli: false,
     servicios: [],
+    servicio: {}, // Servicio Seleccionado.
+    isOpenModal: false, // Modal para editar Servicio.
+    isLoadingModal: true,
     detalleSolicitud: []
 }
 
@@ -150,6 +153,28 @@ export const UsuarioProvider = ({ children }: any ) => {
             payload: detalleSolicitud
         })
     }
+    
+    const selecionarDetalleSolicitud = (detalleSolicitud: any) => {
+        dispatch({type: 'uiInLoadingModal'});
+        dispatch({type: 'uiOpenModal', payload: detalleSolicitud});
+        dispatch({type: 'uiOutLoadingModal'});
+    }
+
+    const quitarLoading = () => {
+        dispatch({type: 'uiOutLoadingModal'});
+    }
+
+    const cerrarModalSolicitud = () => {
+        dispatch({type: 'uiCloseModal'});
+    }
+
+    const actualizarDetalleSolicitud = (detalleSolicitud: any) => {
+        dispatch({
+            type: 'ActualizarDetalleSolicitud',
+            payload: detalleSolicitud
+        })
+        
+    }
 
     return (
         <UsuarioContext.Provider value={{
@@ -163,6 +188,10 @@ export const UsuarioProvider = ({ children }: any ) => {
              obtenerDetalleSolicitud,
             eliminarDetalleSolicitud,
             crearDetalleSolicitud,
+            selecionarDetalleSolicitud,
+            quitarLoading,
+            cerrarModalSolicitud,
+            actualizarDetalleSolicitud,
         }}>
             { children }
         </UsuarioContext.Provider>

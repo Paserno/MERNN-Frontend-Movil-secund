@@ -18,11 +18,14 @@ export const Table = () => {
       <View style={{ width: 110 }}>
         <Text>Servicio</Text>
       </View>
-      <View style={{ width: 100, marginLeft: 10}}>
+      <View style={{ width: 80, marginLeft: 10}}>
         <Text>Precio</Text>
       </View>
-      <View style={{ width: 80, marginLeft: 10}}>
+      <View style={{ width: 60, marginLeft: 10}}>
         <Text>Estado</Text>
+      </View>
+      <View style={{ width: 60, marginLeft: 10}}>
+        <Text>Editar</Text>
       </View>
       
     </View>

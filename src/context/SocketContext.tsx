@@ -11,7 +11,7 @@ export const SocketContext = createContext({} as any);
 export const SocketProvider = ({children}:any) => {
 
     const { dispatch }= useContext(ChatContext);
-    const {actualizarSolicitud, solicitudEliminada, eliminarDetalleSolicitud, crearDetalleSolicitud} = useContext(UsuarioContext)
+    const {actualizarSolicitud, solicitudEliminada, eliminarDetalleSolicitud, crearDetalleSolicitud, actualizarDetalleSolicitud } = useContext(UsuarioContext)
     const { socket, conectarSocket, desconectarSocket } = useSocket('http://192.168.1.84:8082');
     const { logged }: AuthState = useContext(AuthContext);
 
@@ -58,6 +58,14 @@ export const SocketProvider = ({children}:any) => {
     useEffect(() => {
         socket?.on('crear-detalle-solicitud', (detalleSolicitud:any) => {
             crearDetalleSolicitud(detalleSolicitud)
+        });
+      
+    }, [socket])
+
+    useEffect(() => {
+        socket?.on('cambio-detalle-solicitud', (detalleSolicitud:any) => {
+            console.log(detalleSolicitud)
+            actualizarDetalleSolicitud(detalleSolicitud);
         });
       
     }, [socket])

@@ -9,8 +9,14 @@ type UsuarioAction =
 |  { type: 'CargarServicios', payload: any }
 |  { type: 'CargarDetalleSolicitud', payload: any}
 |  { type: 'CargaDetalleVacia'}
-|  { type: 'EliminarDetalleSolicitud', payload: any}
 |  { type: 'NuevoDetalleSolicitud', payload: any}
+|  { type: 'EliminarDetalleSolicitud', payload: any}
+|  { type: 'ActualizarDetalleSolicitud', payload: any}
+|  { type: 'uiOpenModal', payload: any}
+|  { type: 'uiCloseModal'}
+|  { type: 'uiInLoadingModal'}
+|  { type: 'uiOutLoadingModal'}
+// isLoadingModal
 
 
 
@@ -19,6 +25,19 @@ type UsuarioAction =
 export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
 
     switch (action.type) {
+
+        case 'uiOutLoadingModal': 
+            return {
+                ...state,
+                isLoadingModal: false
+            }
+
+        case 'uiInLoadingModal': 
+            return {
+                ...state,
+                isLoadingModal: true
+            }
+
         case 'cargarSolicitudUsuario':
             return {
                 ...state,
@@ -72,6 +91,16 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
                 ...state,
                 detalleSolicitud: []
             }
+
+        case 'ActualizarDetalleSolicitud': 
+            return {
+                ...state,
+                detalleSolicitud: state.detalleSolicitud.map(
+                    (e: { _id: string }) => ( e._id === action.payload._id)
+                        ? action.payload
+                        : e
+                )
+            }
         
         case 'EliminarDetalleSolicitud':
             return {
@@ -88,6 +117,22 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
                 ...state,
                 detalleSolicitud: [...state.detalleSolicitud, action.payload]
             }
+
+        case 'uiOpenModal': 
+            return {
+                ...state,
+                isOpenModal: true,
+                servicio: action.payload
+            }
+
+        case 'uiCloseModal': 
+            return {
+                ...state,
+                isOpenModal: false,
+                servicio: {}
+            }
+
+
     
         default:
             return state;
