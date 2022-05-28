@@ -1,5 +1,5 @@
-import React, {useContext} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, {useContext, useState} from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Switch } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SocketContext } from '../context/SocketContext';
 import { UsuarioContext } from '../context/UsuarioContext';
@@ -8,7 +8,26 @@ import { UsuarioContext } from '../context/UsuarioContext';
 export const ItemTable = ({item}:any) => {
   const {socket} = useContext(SocketContext)
   const {selecionarDetalleSolicitud, solicitud} = useContext(UsuarioContext)
-  
+  const [isEnabled, setIsEnabled] = useState(item.realizado);
+
+  const toggleSwitch = () => {
+    (!isEnabled)
+      ?(
+    Alert.alert('Tarea Lista', '¿Seguro que termino esta tarea?',[
+      {
+        text: 'Cancelar',
+        onPress: () => null
+      },
+      {
+        text: 'Aceptar',
+        onPress: () => setIsEnabled(true)
+      }
+    ])
+      )
+      : null
+
+    
+  };
   
   const onClick = () => {
     selecionarDetalleSolicitud(item);
@@ -16,6 +35,10 @@ export const ItemTable = ({item}:any) => {
 
   const deshabilitarEditar = () => {
     return (solicitud.confirmacion) ? false : true; 
+  }
+
+  const deshabilitarSwitch = () => {
+    return (solicitud.start) ? true : false; 
   }
 
 
@@ -28,7 +51,19 @@ export const ItemTable = ({item}:any) => {
         <Text>{item.precio}</Text>
       </View>
       <View style={{ width: 60, marginLeft: 10, height:30 }}>
-        <Text>{JSON.stringify(item.realizado, null, 5)}</Text>
+      <Switch
+            trackColor={{ false: "#979699", true: "#84B374" }}
+            thumbColor={(solicitud.start) 
+              ? (isEnabled ? "#5856D6" : "#5856D6")
+              : (isEnabled ? "#D9D6DE" : "#D9D6DE") 
+            }
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+            style={{ alignSelf: 'flex-start'}}
+            disabled={!deshabilitarSwitch()}
+
+          />
       </View>
       <View style={{ width: 80, marginLeft: 10, height:30 }}>
         <TouchableOpacity

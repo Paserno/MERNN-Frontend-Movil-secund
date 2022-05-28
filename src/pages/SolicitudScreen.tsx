@@ -281,6 +281,18 @@ export const SolicitudScreen = ({ navigation }: any) => {
               color='black'
             />)
             : (<>
+
+          <Text style={{ margin: 20 }}>Confirmación:
+
+          <Switch
+            trackColor={{ false: "#979699", true: "#84B374" }}
+            thumbColor={isEnabled ? "#D9D6DE" : "#D9D6DE"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+            disabled
+          />
+          </Text>
           <Text style={{ margin: 20 }}>Iniciar Servicio:
           <Text style={{margin: 5}}>
             {JSON.stringify(solicitud.start, null, 5)}
@@ -311,17 +323,7 @@ export const SolicitudScreen = ({ navigation }: any) => {
           />
         </Text>
   
-        <Text style={{ margin: 20 }}>Confirmación:
-
-          <Switch
-            trackColor={{ false: "#979699", true: "#84B374" }}
-            thumbColor={isEnabled ? "#D9D6DE" : "#D9D6DE"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-            disabled
-          />
-        </Text>
+        
             
             
             </>
