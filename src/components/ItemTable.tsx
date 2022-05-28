@@ -7,12 +7,15 @@ import { UsuarioContext } from '../context/UsuarioContext';
 
 export const ItemTable = ({item}:any) => {
   const {socket} = useContext(SocketContext)
-  const {selecionarDetalleSolicitud} = useContext(UsuarioContext)
+  const {selecionarDetalleSolicitud, solicitud} = useContext(UsuarioContext)
   
   
   const onClick = () => {
     selecionarDetalleSolicitud(item);
-    
+  }
+
+  const deshabilitarEditar = () => {
+    return (solicitud.confirmacion) ? false : true; 
   }
 
 
@@ -31,10 +34,11 @@ export const ItemTable = ({item}:any) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={onClick}
+          disabled={!deshabilitarEditar()}
         >
           <Icon 
               name={ 'create-sharp' }
-              color="#5856D6"
+              color={(solicitud.confirmacion) ? '#A3A3BD': "#5856D6"}
               size={ 20 }
               style={{ marginLeft: 10}}
           />

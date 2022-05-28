@@ -11,13 +11,25 @@ export const SolicitudScreen = ({ navigation }: any) => {
   const popActions = StackActions.pop(2);
   const { solicitud, deleteSoli, servicios, obtenerDetalleSolicitud, servicio, isLoadingModal, quitarLoading, isOpenModal, cerrarModalSolicitud } = useContext(UsuarioContext);
   const {socket} = useContext(SocketContext)
+
   const [isEnabled, setIsEnabled] = useState(solicitud.confirmacion);
+  const [isSecundEnabled, setIsSecundEnabled] = useState(solicitud.start);
+  const [isThirdEnabled, setIsThirdEnabled] = useState(solicitud.finish);
 
   const [isVisible, setIsVisible] = useState(false);
+  const [onLoad, setOnLoad] = useState(true);
   const [service, setService] = useState('');
   const [form, setForm] = useState({
     precio: ''
   });
+
+  useEffect(() => {
+    setOnLoad(true);
+    setIsSecundEnabled(solicitud.start)
+    setIsThirdEnabled(solicitud.finish)
+    esperarCargaSolicitud();
+  }, [solicitud])
+  
 
   useEffect(() => {
     if ( isOpenModal ) {
@@ -44,9 +56,17 @@ export const SolicitudScreen = ({ navigation }: any) => {
       obtenerDetalleSolicitud(idSolicitud);
   }, [solicitud])
 
+
   const toggleSwitch = () => {
     setIsEnabled(!isEnabled)
   };
+  const toggleSecundSwitch = () => {
+    setIsSecundEnabled(!isSecundEnabled)
+  };
+  const toggleThirdSwitch = () => {
+    setIsThirdEnabled(!isThirdEnabled)
+  };
+
 
   const volverAtras = () => {
     console.log('Salgo')
@@ -104,6 +124,19 @@ export const SolicitudScreen = ({ navigation }: any) => {
   });
   }
 
+  const esperarCargaSolicitud = () => {
+    setTimeout(() => {
+      setOnLoad(false);
+    }, 1);
+  }
+
+  const deshabilitarNuevoServicio = () => {
+    return (solicitud.confirmacion) ? false : true; 
+  }
+
+  const deshabiltarInicioServicio = () => {
+    return (solicitud.confirmacion) ? true : false; 
+  }
 
   return (
     <View style={styles.conteiner}>
@@ -122,7 +155,10 @@ export const SolicitudScreen = ({ navigation }: any) => {
             <View style={styles.modalScreen}>
 
               <View style={styles.sectionTitle}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, color: 'black' }}>Agregar Servicio</Text>
+                <Text style={{ fontSize: 20, 
+                  fontWeight: 'bold', 
+                  marginLeft: 20, 
+                  color: 'black' }}>{(isOpenModal) ? "Editar Servicio" : "Agregar Servicio"}</Text>
               </View>
 
               
@@ -238,11 +274,43 @@ export const SolicitudScreen = ({ navigation }: any) => {
 
         {/* ------------------------ Modal fin ------------------------------ */}
 
-
-        <Text>
-          {JSON.stringify(isEnabled, null, 5)}
+        {
+          (onLoad)
+            ? (<ActivityIndicator 
+              size={ 50 }
+              color='black'
+            />)
+            : (<>
+          <Text style={{ margin: 20 }}>Iniciar Servicio:
+          <Text style={{margin: 5}}>
+            {JSON.stringify(solicitud.start, null, 5)}
+          </Text>
+          <Switch
+            trackColor={{ false: "#979699", true: "#84B374" }}
+            thumbColor={ (solicitud.confirmacion) 
+                ? (isSecundEnabled ? "#5856D6" : "#5856D6") 
+                : (isSecundEnabled ? "#D9D6DE" : "#D9D6DE") }
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSecundSwitch}
+            value={isSecundEnabled}
+            disabled={!deshabiltarInicioServicio()}
+          />
         </Text>
 
+        <Text style={{ margin: 20 }}>Finalizar Servicio:
+          <Text style={{margin: 5}}>
+            {JSON.stringify(solicitud.finish, null, 5)}
+          </Text>
+          <Switch
+            trackColor={{ false: "#979699", true: "#84B374" }}
+            thumbColor={isThirdEnabled ? "#D9D6DE" : "#D9D6DE"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleThirdSwitch}
+            value={isThirdEnabled}
+            disabled
+          />
+        </Text>
+  
         <Text style={{ margin: 20 }}>Confirmación:
 
           <Switch
@@ -254,6 +322,14 @@ export const SolicitudScreen = ({ navigation }: any) => {
             disabled
           />
         </Text>
+            
+            
+            </>
+
+            )
+        }
+
+        
 
         <View style={styles.containerTable}>
           <Table />
@@ -262,7 +338,8 @@ export const SolicitudScreen = ({ navigation }: any) => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {setIsVisible(true), quitarLoading()} }
-          style={{ ...styles.blackButton, marginBottom: 10, marginTop: 10 }}
+          style={ (solicitud.confirmacion) ? {...styles.blackButton, marginBottom: 10, marginTop: 10, backgroundColor: '#656565'} : {...styles.blackButton, marginBottom: 10, marginTop: 10}}
+          disabled={!deshabilitarNuevoServicio()}
         >
           <Text style={styles.buttonText}>Nuevo Servicio</Text>
         </TouchableOpacity>

@@ -64,7 +64,6 @@ export const SocketProvider = ({children}:any) => {
 
     useEffect(() => {
         socket?.on('cambio-detalle-solicitud', (detalleSolicitud:any) => {
-            console.log(detalleSolicitud)
             actualizarDetalleSolicitud(detalleSolicitud);
         });
       
