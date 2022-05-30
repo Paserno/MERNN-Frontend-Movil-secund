@@ -65,10 +65,15 @@ export const UsuarioProvider = ({ children }: any ) => {
     }
 
     const actualizarJardinero = async( id:string, activo: boolean) => {
-        console.log(activo)
         try {
             const {data} = await connectionApi.put(`/jardin/${id}`, {activo});
-            console.log(data);
+            if (data.ok){
+                const jardinero = data.jardinero
+                dispatch({
+                    type: 'ActualizarJardinero',
+                    payload: jardinero
+                })
+            }
 
         } catch (error) {
             console.log(error)

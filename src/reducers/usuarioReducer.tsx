@@ -3,6 +3,7 @@
 type UsuarioAction = 
 |  { type: 'cargarSolicitudUsuario', payload: any }
 |  { type: 'loginJardinero', payload: any }
+|  { type: 'ActualizarJardinero', payload: any }
 |  { type: 'SeleccionarSolicitud', payload: any }
 |  { type: 'ActualizarSolicitud', payload: any }
 |  { type: 'SolicitudEliminada'}
@@ -36,6 +37,12 @@ export const usuarioReducer = ( state:any, action: UsuarioAction ) => {
             return {
                 ...state,
                 isLoadingModal: true
+            }
+        
+        case 'ActualizarJardinero': 
+            return {
+                ...state,
+                jardinero: action.payload
             }
 
         case 'cargarSolicitudUsuario':
