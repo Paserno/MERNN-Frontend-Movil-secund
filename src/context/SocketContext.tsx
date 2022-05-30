@@ -16,6 +16,7 @@ export const SocketProvider = ({children}:any) => {
     const { logged }: AuthState = useContext(AuthContext);
 
     useEffect(() => {
+        desconectarSocket();
         if(logged){
           conectarSocket();
         }
@@ -23,7 +24,7 @@ export const SocketProvider = ({children}:any) => {
 
     useEffect(() => {
       if (!logged){
-        desconectarSocket()
+        desconectarSocket();
       }
     }, [socket, desconectarSocket])
     
