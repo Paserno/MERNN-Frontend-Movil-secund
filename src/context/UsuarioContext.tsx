@@ -64,6 +64,18 @@ export const UsuarioProvider = ({ children }: any ) => {
         }
     }
 
+    const actualizarJardinero = async( id:string, activo: boolean) => {
+        console.log(activo)
+        try {
+            const {data} = await connectionApi.put(`/jardin/${id}`, {activo});
+            console.log(data);
+
+        } catch (error) {
+            console.log(error)
+            
+        }
+    }
+
     const selecionarSolicitud = async(idSolicitud: string) => {
         try {
             const id = idSolicitud;
@@ -192,6 +204,7 @@ export const UsuarioProvider = ({ children }: any ) => {
             quitarLoading,
             cerrarModalSolicitud,
             actualizarDetalleSolicitud,
+            actualizarJardinero,
         }}>
             { children }
         </UsuarioContext.Provider>
