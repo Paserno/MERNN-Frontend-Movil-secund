@@ -1,10 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
 import { View } from 'react-native';
 import { useLocation } from '../hooks/useLocation';
 import { LoadingScreen } from '../pages/LoadingScreen';
 // import { Location } from '../interface/appInterface';
 import { Fab } from './Fab';
+import { SocketContext } from '../context/SocketContext';
+import { CoordenadasContext } from '../context/CoordenadasContext';
+import { UsuarioContext } from '../context/UsuarioContext';
+import { AuthContext } from '../context/AuthContext';
 
 
 interface Props {
@@ -12,6 +16,19 @@ interface Props {
 }
 
 export const Map = ({ markers }:Props) => {
+
+  const { user } = useContext(AuthContext);
+  const { socket }    = useContext(SocketContext);
+  const { solicitud }    = useContext(UsuarioContext);
+  const { emitirCoordenada,
+    idIntervalo,
+    compartirCoordenadas,
+    noCompartirCoodrenadas,
+    saveIntervalo,
+    state } = useContext(CoordenadasContext);
+
+  const usuario = solicitud.idUsuario;
+  
 
   const [showPolyline, setShowPolyline] = useState(true)
 
@@ -47,7 +64,40 @@ export const Map = ({ markers }:Props) => {
     })
   }, [userLocation])
   
+
+  // ---------------------------- Intervalo -----------------------------
+  let intervalID = useRef<any>(0);
+
+
+  const iniciarIntervalo = () => {
+    compartirCoordenadas()
+    intervalID.current  = setInterval(compartirUbicacion, 1000);
+    saveIntervalo(intervalID.current)
+  }
+
+  const finIntervalo = () => {
+    intervalID.current = idIntervalo
+    noCompartirCoodrenadas();
+    clearInterval(intervalID.current);
+    intervalID.current = 0
+  }
   
+  const compartirUbicacion = async () => {
+
+    const { latitude, longitude } = await getCurrentLocation();
+    console.log(latitude, longitude)
+    console.log(usuario._id)
+    console.log(user?.uid)
+
+
+    socket.emit( 'coordenadas-compartida',{
+      jid: usuario._id,
+      otherId: user?.uid,
+      latitude: latitude,
+      longitude: longitude 
+    })
+
+  }
 
 
   const centerPosition = async() => {
@@ -94,16 +144,56 @@ export const Map = ({ markers }:Props) => {
           }
           
 
-            {/* <Marker
-              image={ require('../assets/custom-marker.png')}
-              coordinate={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-              }}
-              title='Esto es un titulo'
-              description=' Esto es una descripción del marcador'
-            /> */}
+          {
+            (Object.keys(state.coordenadas).length === 0) 
+            ? null 
+            :(
+              <Marker
+                image={ require('../assets/marker3.png')}
+                coordinate={{
+                  latitude: state.coordenadas.latitude ?? initialPosition.latitude,
+                  longitude: state.coordenadas.longitude ?? initialPosition.longitude,
+                }}
+                title='Usuario'
+                description='Ultima Posición del Usuario'
+              />
+
+            )
+
+          }
         </MapView>
+
+
+        {
+              (emitirCoordenada) 
+                  ? (
+                    <Fab 
+                      iconName='send'
+                      onPress={ iniciarIntervalo }
+                      style={{
+                        position: 'absolute',
+                        bottom: 20,
+                        left: 20,
+                        transform: [
+                          { rotateZ: "-20deg" }
+                        ]
+                      }}
+                    />
+
+                  )
+                  : (
+                    <Fab 
+                      iconName='close-circle'
+                      onPress={ finIntervalo }
+                      style={{
+                        position: 'absolute',
+                        bottom: 20,
+                        left: 20
+                      }}
+                    />
+
+                  )
+            }
 
         <Fab 
           iconName='compass-outline'

@@ -12,7 +12,7 @@ export const SolicitudScreen = ({ navigation }: any) => {
   const popAction = StackActions.pop(1);
   const popActions = StackActions.pop(2);
   const { solicitud, deleteSoli, servicios, obtenerDetalleSolicitud, servicio, isLoadingModal, quitarLoading, isOpenModal, cerrarModalSolicitud } = useContext(UsuarioContext);
-  const {socket} = useContext(SocketContext)
+  const {socket} = useContext(SocketContext);
 
   const [isEnabled, setIsEnabled] = useState(solicitud.confirmacion);
   const [isSecundEnabled, setIsSecundEnabled] = useState(solicitud.start);
@@ -55,7 +55,9 @@ export const SolicitudScreen = ({ navigation }: any) => {
 
   useEffect(() => {
       const idSolicitud = solicitud._id;
-      obtenerDetalleSolicitud(idSolicitud);
+      if(idSolicitud){
+        obtenerDetalleSolicitud(idSolicitud);
+      }
   }, [solicitud])
 
 

@@ -8,6 +8,7 @@ import { UsuarioProvider } from './src/context/UsuarioContext';
 import { SocketProvider } from './src/context/SocketContext';
 import { ChatProvider } from './src/context/ChatContext';
 import { NativeBaseProvider } from "native-base";
+import { CoordenadasProvider } from './src/context/CoordenadasContext';
 
 
 const AppState = ({ children }: any) => {
@@ -16,11 +17,13 @@ const AppState = ({ children }: any) => {
     <ChatProvider>
       <AuthProvider>
         <UsuarioProvider>
-        <SocketProvider>
-          <PermissionsProvider>
-            { children }
-          </PermissionsProvider>
-        </SocketProvider>
+          <CoordenadasProvider>
+            <SocketProvider>
+              <PermissionsProvider>
+                { children }
+              </PermissionsProvider>
+            </SocketProvider>
+          </CoordenadasProvider>
         </UsuarioProvider>
       </AuthProvider>
     </ChatProvider>

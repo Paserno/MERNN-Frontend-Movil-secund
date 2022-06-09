@@ -4,6 +4,7 @@ import { AuthContext } from './AuthContext';
 import { AuthState } from './authReducer';
 import { ChatContext } from './ChatContext';
 import { UsuarioContext } from './UsuarioContext';
+import { CoordenadasContext } from './CoordenadasContext';
 
 
 export const SocketContext = createContext({} as any);
@@ -11,6 +12,8 @@ export const SocketContext = createContext({} as any);
 export const SocketProvider = ({children}:any) => {
 
     const { dispatch }= useContext(ChatContext);
+    const { saveCoordenadas } = useContext(CoordenadasContext);
+
     const {actualizarSolicitud, solicitudEliminada, eliminarDetalleSolicitud, crearDetalleSolicitud, actualizarDetalleSolicitud } = useContext(UsuarioContext)
     const { socket, conectarSocket, desconectarSocket } = useSocket('http://192.168.1.84:8082');
     const { logged }: AuthState = useContext(AuthContext);
@@ -75,6 +78,15 @@ export const SocketProvider = ({children}:any) => {
             eliminarDetalleSolicitud(detalleSolicitud);
         });
       
+    }, [socket])
+
+    useEffect(() => {
+
+        socket?.on('coordenadas-compartida', (payload:any) => {
+            saveCoordenadas(payload);
+
+        });
+
     }, [socket])
 
     const desconectarSocketChat = () => {

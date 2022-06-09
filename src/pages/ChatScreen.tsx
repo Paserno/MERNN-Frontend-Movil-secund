@@ -1,8 +1,8 @@
 import React, {useContext, useEffect} from 'react'
 import { View, Text, StatusBar, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { BackgroundChat } from '../components/BackgroundChat';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation, CommonActions } from '@react-navigation/native';
+// import Icon from 'react-native-vector-icons/Ionicons';
+// import { useNavigation, CommonActions } from '@react-navigation/native';
 import { SendMessage } from '../components/chat/SendMessage';
 import { InComingMessage } from '../components/chat/InComingMessage';
 import { OutComingMessage } from '../components/chat/OutComingMessage';
@@ -22,7 +22,7 @@ export const ChatScreen = () => {
 
 
     
-    const navigator = useNavigation();
+    // const navigator = useNavigation();
 
     const renderItem = ({item}:any) => (
       ( item.para === user?.uid)
