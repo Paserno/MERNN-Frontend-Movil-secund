@@ -61,7 +61,7 @@ export const JardinerosScreen = ({ navigation }: any) => {
       >
       <Icon 
           name={ 'search-sharp' }
-          color="white"
+          color="transparent"
           size={ 34 }
           style={{ marginRight: 20}}
       /> 

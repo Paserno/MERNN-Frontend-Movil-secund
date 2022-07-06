@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const baseURL = 'http://192.168.1.84:8082/api';
+const baseURL = 'https://atj-backend.herokuapp.com/api';
 
 
 const connectionApi = axios.create({ baseURL });
